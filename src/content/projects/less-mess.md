@@ -1,6 +1,6 @@
 ---
 title: Less Mess
-summary: Less Mess was BCEC's first major program — a Keep Australia Beautiful WA–funded campaign that rallied City of Belmont residents to clean up litter and build community, one neighbourhood at a time.
+summary: Less Mess was BCEC's first major program, a Keep Australia Beautiful WA–funded campaign that rallied City of Belmont residents to clean up litter and build community, one neighbourhood at a time.
 categoryChecklist:
   - '[x] Litter Prevention'
   - '[x] Waste Reduction'

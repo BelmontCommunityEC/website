@@ -59,9 +59,9 @@ draft: false
 
 Delivered in collaboration with the City of Belmont, Go Nuts invited local residents to help feed our starving black cockatoos by planting fast-growing almond and macadamia nut trees in backyards across Belmont.
 
-Every giveaway came with everything needed to give the tree the best start in Perth's sandy soils: soil conditioners, mulch and a planting guide. Residents were also invited to a free education workshop led by Dean Arthurell of Carnaby's Crusaders at the Belmont Community Centre, where they learned about the birds' plight — now so severe that many are foregoing their annual breeding migration to the Wheatbelt.
+Every giveaway came with everything needed to give the tree the best start in Perth's sandy soils: soil conditioners, mulch and a planting guide. Residents were also invited to a free education workshop led by Dean Arthurell of Carnaby's Crusaders at the Belmont Community Centre, where they learned about the birds' plight, now so severe that many are foregoing their annual breeding migration to the Wheatbelt.
 
-We gave away more than 60 trees to City of Belmont residents, and were thrilled that Kewdale Primary School and Belmont City College came on board too — planting trees in their grounds for students to care for, monitor and learn from for years to come. Beyond feeding the cockatoos, the trees add to Belmont's tree canopy, shade and habitat, and the almonds are already fruiting.
+We gave away more than 60 trees to City of Belmont residents, and were thrilled that Kewdale Primary School and Belmont City College came on board too, planting trees in their grounds for students to care for, monitor and learn from for years to come. Beyond feeding the cockatoos, the trees add to Belmont's tree canopy, shade and habitat, and the almonds are already fruiting.
 
 Buoyed by the response, we plan to keep encouraging the planting of foraging trees each season - and to add native species alongside the nut trees, so there's an option for every garden, big or small.
 
