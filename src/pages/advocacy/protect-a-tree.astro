@@ -1,0 +1,411 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { forms, socials } from '../../config';
+---
+
+<BaseLayout
+  title="Report a Tree Concern"
+  description="Create an email to report a private tree at risk of removal or damage to the City of Belmont under Local Planning Policy No. 21."
+>
+  <section class="bg-brand-light/50">
+    <div class="mx-auto max-w-5xl px-4 py-6 sm:px-6">
+      <a href="/advocacy" class="block text-sm font-medium text-brand hover:underline">
+        ← Advocacy
+      </a>
+      <p class="mt-4 inline-flex rounded-full bg-brand-dark px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+        Take action
+      </p>
+      <h1 class="mt-4 font-heading text-3xl font-bold text-brand-dark sm:text-4xl">
+        Concerned about a tree?
+      </h1>
+      <p class="mt-4 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">
+        Use this tool to report a private tree that may be at risk of removal or damage in the
+        City of Belmont.
+      </p>
+    </div>
+  </section>
+
+  <main class="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
+    <section aria-labelledby="email-builder-heading">
+      <h2 id="email-builder-heading" class="font-heading text-2xl font-bold text-brand-dark">
+        Tell us about the tree
+      </h2>
+      <p class="mt-3 max-w-3xl text-sm leading-relaxed text-muted sm:text-base">
+        Answer what you can and leave anything you are unsure about blank. We’ll use your answers
+        to create an email you can review, edit and send to the City.
+      </p>
+      <p class="mt-2 max-w-3xl text-sm leading-relaxed text-muted">
+        The information you enter is processed in your browser and is not saved by this website.
+        It is shared with BCEC only if you choose to copy BCEC into the email and send it.
+      </p>
+      <p class="mt-4 rounded-lg border-l-4 border-brand bg-brand-light/40 p-4 text-sm leading-relaxed text-ink">
+        If removal or damaging work is underway or appears imminent, contact the City on{' '}
+        <a href="tel:0894777222" class="font-semibold text-brand underline underline-offset-2">(08) 9477 7222</a>{' '}
+        and follow up with an email using the template below.
+      </p>
+
+      <form id="tree-concern-form" class="mt-8 space-y-10">
+        <fieldset class="min-w-0">
+          <legend class="font-heading text-lg font-bold text-brand-dark">Tree address</legend>
+          <label for="tree-address" class="mt-4 block text-sm font-semibold text-ink">
+            What is the address of the property?
+          </label>
+          <input
+            id="tree-address"
+            name="address"
+            type="text"
+            autocomplete="street-address"
+            placeholder="e.g. 10 Example St, Kewdale"
+            class="mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+          />
+        </fieldset>
+
+        <fieldset class="min-w-0">
+          <legend class="font-heading text-lg font-bold text-brand-dark">
+            Approximate tree size
+          </legend>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            Select each measurement that appears to apply. Leave it blank if you are unsure.
+          </p>
+          <div class="mt-4 grid gap-4">
+            {[
+              {
+                name: 'height',
+                question: 'The tree is approximately 8 metres or more in height.',
+                help: 'About as tall as a two-storey house.',
+              },
+              {
+                name: 'canopy',
+                question: 'The tree’s average canopy is approximately 6 metres or more in width.',
+                help: 'From one side to the other, about as wide as a two-car garage.',
+              },
+              {
+                name: 'trunk',
+                question: 'The trunk circumference is approximately 1.5 metres or more, measured 1.4 metres above ground.',
+                help: 'At roughly chest height, an average adult could just wrap both arms around the trunk with their fingertips meeting.',
+              },
+            ].map((measurement) => (
+              <label class="flex min-h-11 cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 hover:border-brand-light">
+                <input type="checkbox" name="measurement" value={measurement.name} class="mt-1 h-5 w-5 flex-none accent-brand" />
+                <span>
+                  <span class="block text-sm font-semibold leading-relaxed text-ink">{measurement.question}</span>
+                  {measurement.help && <span class="mt-2 block text-xs leading-relaxed text-muted">{measurement.help}</span>}
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset class="min-w-0">
+          <legend class="font-heading text-lg font-bold text-brand-dark">
+            Why do you believe the tree may be at risk?
+          </legend>
+          <div class="mt-4 grid gap-3 sm:grid-cols-2">
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="the property was recently sold or listed for sale" class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>The property was recently sold or listed for sale.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="building, demolition or renovation work appears to be planned" class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>Building, demolition or renovation work appears to be planned.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="contractors, machinery or tree-removal equipment have been observed" data-suggest-urgent class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>Contractors, machinery or tree-removal equipment have been observed.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="clearing, excavation or other work has begun near the tree" data-suggest-urgent class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>Clearing, excavation or other work has begun near the tree.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="the tree appears to have been marked for removal" data-suggest-urgent class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>The tree appears to have been marked for removal.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="I have been told that the tree may be removed" class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>I have been told that the tree may be removed.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="removal or damaging work is happening now" data-suggest-urgent class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>Removal or damaging work is happening now.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="the tree has already been removed" class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>The tree has already been removed.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="the tree has been heavily pruned, lopped or topped" class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>The tree has been heavily pruned, lopped or topped.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="the tree appears to have been ringbarked or poisoned" class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>The tree appears to have been ringbarked or poisoned.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="the tree has otherwise been damaged" class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>The tree has otherwise been damaged.</span>
+            </label>
+          </div>
+          <label for="risk-other" class="mt-4 block text-sm font-semibold text-ink">
+            Describe what you observed or add other details
+          </label>
+          <textarea id="risk-other" name="riskOther" rows="3" class="mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"></textarea>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2">
+            <label class="block text-sm font-semibold text-ink">
+              Date observed
+              <input name="observedDate" type="date" class="mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-normal text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20" />
+            </label>
+            <label class="block text-sm font-semibold text-ink">
+              Time observed
+              <input name="observedTime" type="time" class="mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-normal text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20" />
+            </label>
+          </div>
+          <p id="urgent-suggestion" class="mt-4 rounded-lg border-l-4 border-brand bg-brand-light/40 p-4 text-sm leading-relaxed text-ink" hidden aria-live="polite">
+            Your answers suggest this concern may be urgent. If removal or damaging work is underway or appears imminent, contact the City on{' '}
+            <a href="tel:0894777222" class="font-semibold text-brand underline underline-offset-2">(08) 9477 7222</a>{' '}
+            and follow up with the email drafted below.
+          </p>
+          <label class="mt-4 flex cursor-pointer gap-3 rounded-lg border border-brand-light bg-brand-light/30 p-4">
+            <input type="checkbox" name="urgent" class="mt-1 h-5 w-5 flex-none accent-brand" />
+            <span>
+              <strong class="block text-brand-dark">The concern is urgent</strong>
+              <span class="mt-1 block text-sm text-muted">Add “URGENT” to the subject and copy planning@belmont.wa.gov.au into the email.</span>
+            </span>
+          </label>
+        </fieldset>
+
+        <fieldset class="min-w-0">
+          <legend class="font-heading text-lg font-bold text-brand-dark">Photos and your details</legend>
+          <label class="mt-4 flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+            <input type="checkbox" name="hasPhotos" class="mt-1 h-5 w-5 flex-none accent-brand" />
+            <span>I have photos to attach.</span>
+          </label>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            You will need to attach the photos yourself after opening the email draft.
+            Take photos only from a public place or somewhere you have permission to be.
+          </p>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2">
+            <label class="block text-sm font-semibold text-ink">
+              Photo date
+              <input name="photoDate" type="date" class="mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-normal text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20" />
+            </label>
+            <label class="block text-sm font-semibold text-ink">
+              Photo time
+              <input name="photoTime" type="time" class="mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-normal text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20" />
+            </label>
+            <label class="block text-sm font-semibold text-ink">
+              Your name
+              <input name="senderName" type="text" autocomplete="name" class="mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-normal text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20" />
+            </label>
+            <label class="block text-sm font-semibold text-ink">
+              Your email (optional)
+              <input name="senderEmail" type="email" autocomplete="email" class="mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-normal text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20" />
+            </label>
+            <label class="block text-sm font-semibold text-ink">
+              Your phone number (optional)
+              <input name="senderPhone" type="tel" autocomplete="tel" class="mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-normal text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20" />
+            </label>
+          </div>
+          {socials.email && (
+            <label class="mt-4 flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="copyBcec" value={socials.email} class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>
+                <strong class="block text-brand-dark">Copy BCEC into the email</strong>
+                <span class="mt-1 block text-muted">Add {socials.email} to the CC field so BCEC knows you raised the concern.</span>
+              </span>
+            </label>
+          )}
+        </fieldset>
+      </form>
+    </section>
+
+    <section class="mt-12 border-t border-brand-light pt-10" aria-labelledby="preview-heading">
+      <h2 id="preview-heading" class="font-heading text-2xl font-bold text-brand-dark">
+        Review your email
+      </h2>
+      <dl class="mt-5 grid gap-2 text-sm sm:grid-cols-[5rem_1fr]">
+        <dt class="font-semibold text-brand-dark">To</dt>
+        <dd>belmont@belmont.wa.gov.au</dd>
+        <dt class="font-semibold text-brand-dark">CC</dt>
+        <dd id="email-cc">Not selected</dd>
+        <dt class="font-semibold text-brand-dark">Subject</dt>
+        <dd id="email-subject">Tree concern at [insert address]</dd>
+      </dl>
+      <pre id="email-preview" class="mt-5 max-h-[34rem] overflow-auto whitespace-pre-wrap rounded-lg border border-gray-200 bg-surface p-4 font-body text-sm leading-relaxed text-ink"></pre>
+      <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <button
+          id="copy-email"
+          type="button"
+          class="inline-flex min-h-11 items-center justify-center rounded-lg border border-brand px-5 py-3 font-semibold text-brand transition hover:bg-brand-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        >
+          Copy email
+        </button>
+        <a
+          id="open-email"
+          href="mailto:belmont@belmont.wa.gov.au"
+          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand px-5 py-3 text-center font-semibold text-white transition hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        >
+          Open email draft
+        </a>
+      </div>
+      <p id="copy-status" class="mt-3 min-h-5 text-sm font-semibold text-brand" aria-live="polite"></p>
+      <p class="mt-3 text-sm leading-relaxed text-muted">
+        Review the draft, replace any remaining bracketed text, and attach your photos before
+        sending. Your information is not saved by this website or shared with BCEC unless you
+        choose to copy BCEC into the email and send it.
+      </p>
+    </section>
+
+    <section class="mt-12 border-t border-brand-light pt-10" aria-labelledby="keep-involved-heading">
+      <h2 id="keep-involved-heading" class="font-heading text-2xl font-bold text-brand-dark">
+        Keep making a difference
+      </h2>
+      <div class="mt-5 grid gap-3 sm:grid-cols-2">
+        <a href="/advocacy#submissions" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
+          Read BCEC’s support for Local Planning Policy No. 21
+        </a>
+        <a href="/projects" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
+          Explore our community projects
+        </a>
+        <a href={forms.membership} target="_blank" rel="noopener noreferrer" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
+          Become a BCEC member
+        </a>
+        {socials.facebook && (
+          <a href={socials.facebook} target="_blank" rel="noopener noreferrer" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
+            Follow BCEC on Facebook
+          </a>
+        )}
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.querySelector<HTMLFormElement>('#tree-concern-form');
+    const preview = document.querySelector<HTMLElement>('#email-preview');
+    const subjectElement = document.querySelector<HTMLElement>('#email-subject');
+    const ccElement = document.querySelector<HTMLElement>('#email-cc');
+    const openEmail = document.querySelector<HTMLAnchorElement>('#open-email');
+    const copyButton = document.querySelector<HTMLButtonElement>('#copy-email');
+    const copyStatus = document.querySelector<HTMLElement>('#copy-status');
+    const urgentSuggestion = document.querySelector<HTMLElement>('#urgent-suggestion');
+
+    const fieldValue = (name: string) => {
+      const field = form?.elements.namedItem(name);
+      return field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement
+        ? field.value.trim()
+        : '';
+    };
+
+    const checkedValues = (name: string) =>
+      Array.from(form?.querySelectorAll<HTMLInputElement>(`input[name="${name}"]:checked`) ?? [])
+        .map((input) => input.value);
+
+    const joinReasons = (reasons: string[]) => {
+      if (reasons.length < 2) return reasons[0] ?? '';
+      if (reasons.length === 2) return `${reasons[0]} and ${reasons[1]}`;
+      return `${reasons.slice(0, -1).join(', ')}, and ${reasons.at(-1)}`;
+    };
+
+    const formatDate = (value: string) => {
+      if (!value) return '';
+      const [year, month, day] = value.split('-');
+      return year && month && day ? `${day}/${month}/${year}` : value;
+    };
+
+    const buildEmail = () => {
+      const address = fieldValue('address') || '[insert full address]';
+      const selectedMeasurements = checkedValues('measurement');
+      const measurementDescriptions: Record<string, string> = {
+        height: 'a height of approximately 8 metres or more',
+        canopy: 'an average canopy width of approximately 6 metres or more',
+        trunk: 'a trunk circumference of approximately 1.5 metres or more when measured 1.4 metres above ground',
+      };
+      const riskReasons = checkedValues('riskReason');
+      const riskOther = fieldValue('riskOther');
+      const observedDate = formatDate(fieldValue('observedDate'));
+      const observedTime = fieldValue('observedTime');
+      const hasPhotos = form?.querySelector<HTMLInputElement>('input[name="hasPhotos"]')?.checked ?? false;
+      const photoDate = formatDate(fieldValue('photoDate')) || '[insert date]';
+      const photoTime = fieldValue('photoTime') || '[insert time]';
+      const senderName = fieldValue('senderName') || '[insert your name]';
+      const senderEmail = fieldValue('senderEmail');
+      const senderPhone = fieldValue('senderPhone');
+      const urgent = form?.querySelector<HTMLInputElement>('input[name="urgent"]')?.checked ?? false;
+      const copyBcec = form?.querySelector<HTMLInputElement>('input[name="copyBcec"]:checked');
+      const urgencySuggested = form?.querySelector<HTMLInputElement>('input[data-suggest-urgent]:checked') !== null;
+
+      if (riskOther) riskReasons.push(riskOther);
+
+      const knownMeasurements = selectedMeasurements
+        .map((measurement) => measurementDescriptions[measurement])
+        .filter(Boolean);
+      const policyDetails = knownMeasurements.length
+        ? `From what I can tell, the tree has ${joinReasons(knownMeasurements)}, so the activity may not qualify for the size-based exemption in clause 5.1.1(a).`
+        : '';
+      const policyStatement = `Local Planning Policy No. 21 sets out when tree damaging activity is exempt from development approval. ${policyDetails || 'I am unsure whether the reported activity outlined above is exempt.'}`;
+      const riskStatement = riskReasons.length
+        ? `I'm concerned that this tree may be removed or damaged because ${joinReasons(riskReasons)}.`
+        : `I'm concerned that this tree may be removed or damaged because [insert reason for concern].`;
+      const observationWhen = [
+        observedDate ? `on ${observedDate}` : '',
+        observedTime ? `at ${observedTime}` : '',
+      ].filter(Boolean).join(' ');
+      const observationStatement = observationWhen
+        ? `I noticed this ${observationWhen}.`
+        : '';
+      const photoStatement = hasPhotos
+        ? `I have attached photos of the tree taken on ${photoDate} at ${photoTime} to assist Council in identifying the tree and assessing the concern.`
+        : '';
+      const contactLines = [senderEmail, senderPhone].filter(Boolean).join('\n') || '[insert your contact details]';
+      const subject = `${urgent ? 'URGENT: ' : ''}Tree concern at ${address}`;
+      const body = `Hi Planning team,
+
+I'm a local resident and I'm concerned about a tree at ${address}.
+
+${riskStatement}
+
+${observationStatement}
+
+${photoStatement}
+
+${policyStatement}
+
+I respectfully request that Council note this concern, inspect the tree if appropriate, and advise the property owner, developer, or relevant parties of any applicable requirements or protections under Local Planning Policy No. 21.
+
+Thanks for looking into this. Please let me know that you received this email and what happens next.
+
+Kind regards,
+${senderName}
+${contactLines}`.replace(/\n{3,}/g, '\n\n');
+  const cc = [urgent ? 'planning@belmont.wa.gov.au' : '', copyBcec?.value ?? '']
+    .filter(Boolean)
+    .join(',');
+
+      if (preview) preview.textContent = body;
+      if (subjectElement) subjectElement.textContent = subject;
+      if (ccElement) ccElement.textContent = cc || 'Not selected';
+      if (urgentSuggestion) urgentSuggestion.hidden = !urgencySuggested;
+      if (openEmail) {
+        const params = new URLSearchParams({ subject, body });
+        if (cc) params.set('cc', cc);
+        openEmail.href = `mailto:belmont@belmont.wa.gov.au?${params.toString()}`;
+      }
+
+      return { subject, body, cc };
+    };
+
+    form?.addEventListener('input', buildEmail);
+    copyButton?.addEventListener('click', async () => {
+      const { subject, body, cc } = buildEmail();
+      const headers = `To: belmont@belmont.wa.gov.au\n${cc ? `CC: ${cc}\n` : ''}Subject: ${subject}`;
+      try {
+        await navigator.clipboard.writeText(`${headers}\n\n${body}`);
+        if (copyStatus) copyStatus.textContent = 'Email copied to clipboard.';
+      } catch {
+        if (copyStatus) copyStatus.textContent = 'Copy failed. Select and copy the email text above.';
+      }
+    });
+
+    buildEmail();
+  </script>
+</BaseLayout>

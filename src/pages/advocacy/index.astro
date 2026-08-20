@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const submissions = [
+  {
+    title: 'Draft Sustainable Transport Strategy 2026–2031',
+    type: 'Consultation submission',
+    date: '16 August 2026',
+    dateTime: '2026-08-16',
+    recipient: 'City of Belmont',
+    summary:
+      'BCEC recommends measuring low-stress cycling connectivity and access to everyday destinations, establishing a verified baseline, setting a measurable 2031 target, and reporting progress publicly.',
+    documents: [
+      {
+        label: 'View full submission (PDF)',
+        href: '/submissions/bcec-sustainable-transport-strategy-submission-2026-08-16.pdf',
+      },
+      {
+        label: 'View cover letter (PDF)',
+        href: '/submissions/bcec-sustainable-transport-strategy-cover-letter-2026-08-16.pdf',
+      },
+    ],
+  },
+  {
+    title: 'Draft Local Planning Policy No. 21',
+    type: 'Letter of support',
+    date: '13 May 2026',
+    dateTime: '2026-05-13',
+    recipient: 'City of Belmont',
+    summary:
+      'BCEC supports planning measures that protect established trees, improve urban canopy outcomes, strengthen neighbourhood liveability, and provide clear implementation guidance.',
+    documents: [
+      {
+        label: 'View letter of support (PDF)',
+        href: '/submissions/bcec-submission-draft-local-planning-policy-21-2026-05-13.pdf',
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Advocacy"
+  description="Use BCEC community advocacy resources and read our submissions on environmental planning, transport and issues affecting the City of Belmont."
+>
+  <section class="bg-brand-light/50">
+    <div class="mx-auto max-w-5xl px-4 py-6 sm:px-6">
+      <p class="inline-flex rounded-full bg-brand-dark px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+        Community voice
+      </p>
+      <h1 class="mt-4 font-heading text-3xl font-bold text-brand-dark sm:text-4xl">
+        Advocacy
+      </h1>
+      <p class="mt-4 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">
+        We help our community speak up for a cleaner, greener and more connected City of
+        Belmont. Take practical action or read our advocacy submissions.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
+    <div class="grid items-center gap-6 border-b border-brand-light pb-10 sm:grid-cols-[1fr_auto] sm:pb-12">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wide text-brand">Take action</p>
+        <h2 class="mt-2 font-heading text-2xl font-bold text-brand-dark">
+          Concerned about a tree?
+        </h2>
+        <p class="mt-3 max-w-2xl leading-relaxed text-ink">
+          If you believe a private tree may be at risk of removal or damage, use our guided
+          template to report your concern to the City of Belmont.
+        </p>
+      </div>
+      <a
+        href="/advocacy/protect-a-tree"
+        class="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand px-5 py-3 text-center font-semibold text-white transition hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:w-auto"
+      >
+        Create a tree concern email
+      </a>
+    </div>
+  </section>
+
+  <section id="submissions" class="mx-auto max-w-5xl scroll-mt-24 px-4 pb-12 sm:px-6">
+    <p class="text-sm font-semibold uppercase tracking-wide text-brand">Our work</p>
+    <h2 class="mt-2 font-heading text-2xl font-bold text-brand-dark">Published submissions</h2>
+    <p class="mt-3 max-w-3xl leading-relaxed text-muted">
+      BCEC contributes local environmental perspectives to government consultations and
+      policy discussions.
+    </p>
+    <div class="mt-6 grid gap-4">
+      {
+        submissions.map((submission) => (
+          <article class="rounded-lg border border-brand-light bg-white p-5 shadow-sm sm:p-6">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <h3 class="font-heading text-lg font-bold text-brand-dark sm:text-xl">
+                  {submission.title}
+                </h3>
+                <p class="mt-1 text-sm text-muted">{submission.type}</p>
+              </div>
+              <span class="inline-flex w-fit rounded-full bg-brand px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+                Submitted
+              </span>
+            </div>
+
+            <dl class="mt-5 grid gap-3 text-sm text-ink sm:grid-cols-2">
+              <div>
+                <dt class="font-semibold text-brand-dark">Date</dt>
+                <dd><time datetime={submission.dateTime}>{submission.date}</time></dd>
+              </div>
+              <div>
+                <dt class="font-semibold text-brand-dark">Recipient</dt>
+                <dd>{submission.recipient}</dd>
+              </div>
+            </dl>
+
+            <p class="mt-5 text-sm leading-relaxed text-ink sm:text-base">{submission.summary}</p>
+
+            <div class="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+              {submission.documents.map((document) => (
+                <a
+                  href={document.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                >
+                  {document.label}
+                </a>
+              ))}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

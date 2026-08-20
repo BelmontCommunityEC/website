@@ -52,6 +52,7 @@ export const nav = [
   { label: 'Home', href: '/' },
   { label: 'Projects', href: '/projects' },
   { label: 'Events', href: '/events' },
+  { label: 'Advocacy', href: '/advocacy' },
   { label: 'Get Involved', href: '/get-involved' },
   { label: 'About', href: '/about' },
 ];
