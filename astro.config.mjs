@@ -5,9 +5,9 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  // IMPORTANT: change this to your purchased domain before deploying.
+  // Update this when the final custom domain is connected.
   // Used for SEO canonical URLs, sitemap.xml and social share tags.
-  site: 'https://www.example.org',
+  site: 'https://bcec-website-draft.netlify.app',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

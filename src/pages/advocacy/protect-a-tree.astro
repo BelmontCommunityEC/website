@@ -4,8 +4,9 @@ import { forms, socials } from '../../config';
 ---
 
 <BaseLayout
-  title="Report a Tree Concern"
+  title="Protect a tree"
   description="Create an email to report a private tree at risk of removal or damage to the City of Belmont under Local Planning Policy No. 21."
+  image="/site_assets/BCEC Logo (1200 x 630 px).png"
 >
   <section class="bg-brand-light/50">
     <div class="mx-auto max-w-5xl px-4 py-6 sm:px-6">
@@ -16,7 +17,7 @@ import { forms, socials } from '../../config';
         Take action
       </p>
       <h1 class="mt-4 font-heading text-3xl font-bold text-brand-dark sm:text-4xl">
-        Concerned about a tree?
+        Protect a tree
       </h1>
       <p class="mt-4 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">
         Use this tool to report a private tree that may be at risk of removal or damage in the
@@ -150,16 +151,6 @@ import { forms, socials } from '../../config';
             Describe what you observed or add other details
           </label>
           <textarea id="risk-other" name="riskOther" rows="3" class="mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"></textarea>
-          <div class="mt-4 grid gap-4 sm:grid-cols-2">
-            <label class="block text-sm font-semibold text-ink">
-              Date observed
-              <input name="observedDate" type="date" class="mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-normal text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20" />
-            </label>
-            <label class="block text-sm font-semibold text-ink">
-              Time observed
-              <input name="observedTime" type="time" class="mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 font-normal text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20" />
-            </label>
-          </div>
           <p id="urgent-suggestion" class="mt-4 rounded-lg border-l-4 border-brand bg-brand-light/40 p-4 text-sm leading-relaxed text-ink" hidden aria-live="polite">
             Your answers suggest this concern may be urgent. If removal or damaging work is underway or appears imminent, contact the City on{' '}
             <a href="tel:0894777222" class="font-semibold text-brand underline underline-offset-2">(08) 9477 7222</a>{' '}
@@ -258,23 +249,24 @@ import { forms, socials } from '../../config';
 
     <section class="mt-12 border-t border-brand-light pt-10" aria-labelledby="keep-involved-heading">
       <h2 id="keep-involved-heading" class="font-heading text-2xl font-bold text-brand-dark">
-        Keep making a difference
+        More from BCEC
       </h2>
       <div class="mt-5 grid gap-3 sm:grid-cols-2">
-        <a href="/advocacy#submissions" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
-          Read BCEC’s support for Local Planning Policy No. 21
+        <a href="/submissions/bcec-submission-draft-local-planning-policy-21-2026-05-13.pdf" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
+          Read BCEC’s Local Planning Policy No. 21 support letter
         </a>
         <a href="/projects" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
-          Explore our community projects
+          Explore BCEC community projects
+        </a>
+        <a href="/events" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
+          View upcoming BCEC events
         </a>
         <a href={forms.membership} target="_blank" rel="noopener noreferrer" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
           Become a BCEC member
         </a>
-        {socials.facebook && (
-          <a href={socials.facebook} target="_blank" rel="noopener noreferrer" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
-            Follow BCEC on Facebook
-          </a>
-        )}
+        <a href="/" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
+          Visit the BCEC homepage
+        </a>
       </div>
     </section>
   </main>
@@ -322,8 +314,6 @@ import { forms, socials } from '../../config';
       };
       const riskReasons = checkedValues('riskReason');
       const riskOther = fieldValue('riskOther');
-      const observedDate = formatDate(fieldValue('observedDate'));
-      const observedTime = fieldValue('observedTime');
       const hasPhotos = form?.querySelector<HTMLInputElement>('input[name="hasPhotos"]')?.checked ?? false;
       const photoDate = formatDate(fieldValue('photoDate')) || '[insert date]';
       const photoTime = fieldValue('photoTime') || '[insert time]';
@@ -346,13 +336,6 @@ import { forms, socials } from '../../config';
       const riskStatement = riskReasons.length
         ? `I'm concerned that this tree may be removed or damaged because ${joinReasons(riskReasons)}.`
         : `I'm concerned that this tree may be removed or damaged because [insert reason for concern].`;
-      const observationWhen = [
-        observedDate ? `on ${observedDate}` : '',
-        observedTime ? `at ${observedTime}` : '',
-      ].filter(Boolean).join(' ');
-      const observationStatement = observationWhen
-        ? `I noticed this ${observationWhen}.`
-        : '';
       const photoStatement = hasPhotos
         ? `I have attached photos of the tree taken on ${photoDate} at ${photoTime} to assist Council in identifying the tree and assessing the concern.`
         : '';
@@ -363,8 +346,6 @@ import { forms, socials } from '../../config';
 I'm a local resident and I'm concerned about a tree at ${address}.
 
 ${riskStatement}
-
-${observationStatement}
 
 ${photoStatement}
 
