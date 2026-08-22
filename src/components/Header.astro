@@ -2,6 +2,7 @@
 import { nav, site } from '../config';
 
 const path = Astro.url.pathname;
+const isHome = path === '/';
 const isActive = (href: string) =>
   href === '/' ? path === '/' : path.startsWith(href);
 ---
@@ -21,7 +22,13 @@ const isActive = (href: string) =>
       />
     </div>
 
-    <a href="/" class="flex h-full items-center gap-1.5 text-lg font-heading font-bold text-brand-dark">
+    <a
+      href="/"
+      class:list={[
+        'flex h-full items-center gap-1.5 text-lg font-heading font-bold text-brand-dark',
+        isHome && 'hidden',
+      ]}
+    >
       {
         site.logoDesktop || site.logoMobile ? (
           <>
@@ -46,10 +53,13 @@ const isActive = (href: string) =>
     <input type="checkbox" id="nav-toggle" class="peer hidden" />
     <label
       for="nav-toggle"
-      class="relative z-20 flex h-full cursor-pointer items-center p-2 md:hidden"
+      class:list={[
+        'relative z-20 flex h-full cursor-pointer items-center p-2 md:hidden',
+        isHome && 'ml-auto',
+      ]}
       aria-label="Toggle menu"
     >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-ink">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-brand-dark">
         <line x1="3" y1="6" x2="21" y2="6" />
         <line x1="3" y1="12" x2="21" y2="12" />
         <line x1="3" y1="18" x2="21" y2="18" />
