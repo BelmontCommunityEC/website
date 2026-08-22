@@ -33,9 +33,9 @@ import { forms, socials } from '../../config';
         Draft your email
       </h2>
       <p class="mt-3 max-w-3xl text-sm leading-relaxed text-muted sm:text-base">
-        Answer what you can and leave anything you are unsure about blank. The tool uses your
-        answers to build an email template below. You can review and edit the draft, then copy it
-        or open it in your email app to send it yourself.
+        Use this form to prepare an email, not to submit a report. Answer what you can and leave
+        anything you are unsure about blank. The tool turns your answers into a draft below that
+        you review, open in your email app, attach photos to, and send yourself.
       </p>
       <p class="mt-2 max-w-3xl text-sm leading-relaxed text-muted">
         The information you enter is processed in your browser and is not saved by this website.
@@ -212,11 +212,33 @@ import { forms, socials } from '../../config';
       </form>
     </section>
 
-    <section class="mt-12 border-t border-brand-light pt-10" aria-labelledby="preview-heading">
-      <h2 id="preview-heading" class="font-heading text-2xl font-bold text-brand-dark">
-        Review your email
-      </h2>
-      <dl class="mt-5 grid gap-2 text-sm sm:grid-cols-[5rem_1fr]">
+    <section class="mt-12 rounded-2xl border border-brand-light bg-surface/70 p-5 sm:p-6" aria-labelledby="preview-heading">
+      <div class="border-b border-brand-light pb-4">
+        <h2 id="preview-heading" class="font-heading text-2xl font-bold text-brand-dark">
+          Review your email
+        </h2>
+        <div class="mt-2 space-y-2 text-sm leading-relaxed text-muted">
+          <p>
+            You can now open the drafted email in your email app using the button below, then attach
+            your photos and send it.
+          </p>
+          <p>
+            If your email app does not open, you can use the drafted text and copy
+            buttons below to paste the draft directly into a new email. Don’t forget to attach your
+            photos.
+          </p>
+        </div>
+      </div>
+      <div class="mt-4 rounded-xl border border-brand-light bg-brand-light/15 p-4">
+        <a
+          id="open-email"
+          href="mailto:belmont@belmont.wa.gov.au"
+          class="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-brand px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        >
+          Open draft in your email app
+        </a>
+      </div>
+      <dl class="mt-4 grid gap-2 text-sm sm:grid-cols-[5rem_1fr]">
         <dt class="font-semibold text-brand-dark">To</dt>
         <dd>belmont@belmont.wa.gov.au</dd>
         <dt class="font-semibold text-brand-dark">CC</dt>
@@ -224,29 +246,34 @@ import { forms, socials } from '../../config';
         <dt class="font-semibold text-brand-dark">Subject</dt>
         <dd id="email-subject">Tree concern at [insert address]</dd>
       </dl>
-      <pre id="email-preview" class="mt-5 max-h-[34rem] overflow-auto whitespace-pre-wrap rounded-lg border border-gray-200 bg-surface p-4 font-body text-sm leading-relaxed text-ink"></pre>
-      <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        <button
-          id="copy-email"
-          type="button"
-          class="inline-flex min-h-11 items-center justify-center rounded-lg border border-brand px-5 py-3 font-semibold text-brand transition hover:bg-brand-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-        >
-          Copy email
-        </button>
-        <a
-          id="open-email"
-          href="mailto:belmont@belmont.wa.gov.au"
-          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-brand px-5 py-3 text-center font-semibold text-white transition hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-        >
-          Open email draft
-        </a>
+      <pre id="email-preview" class="mt-4 max-h-[34rem] overflow-auto whitespace-pre-wrap rounded-xl border border-gray-200 bg-white p-4 font-body text-sm leading-relaxed text-ink shadow-sm"></pre>
+      <div class="mt-4 rounded-xl border border-brand-light bg-brand-light/15 p-4">
+        <p class="text-sm font-semibold text-brand-dark">If you need to copy the draft instead</p>
+        <div class="mt-3 grid gap-3 sm:grid-cols-3">
+          <button
+            id="copy-to"
+            type="button"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg border border-brand-light bg-white px-4 py-3 text-sm font-semibold text-brand-dark transition hover:border-brand hover:bg-brand-light/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          >
+            Copy address
+          </button>
+          <button
+            id="copy-subject"
+            type="button"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg border border-brand-light bg-white px-4 py-3 text-sm font-semibold text-brand-dark transition hover:border-brand hover:bg-brand-light/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          >
+            Copy subject
+          </button>
+          <button
+            id="copy-email"
+            type="button"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg border border-brand-light bg-white px-4 py-3 text-sm font-semibold text-brand-dark transition hover:border-brand hover:bg-brand-light/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          >
+            Copy full email
+          </button>
+        </div>
       </div>
       <p id="copy-status" class="mt-3 min-h-5 text-sm font-semibold text-brand" aria-live="polite"></p>
-      <p class="mt-3 text-sm leading-relaxed text-muted">
-        Review the draft, replace any remaining bracketed text, and attach your photos before
-        sending. Your information is not saved by this website or shared with BCEC unless you
-        choose to copy BCEC into the email and send it.
-      </p>
     </section>
 
     <section class="mt-12 border-t border-brand-light pt-10" aria-labelledby="keep-involved-heading">
@@ -279,6 +306,8 @@ import { forms, socials } from '../../config';
     const subjectElement = document.querySelector<HTMLElement>('#email-subject');
     const ccElement = document.querySelector<HTMLElement>('#email-cc');
     const openEmail = document.querySelector<HTMLAnchorElement>('#open-email');
+    const copyToButton = document.querySelector<HTMLButtonElement>('#copy-to');
+    const copySubjectButton = document.querySelector<HTMLButtonElement>('#copy-subject');
     const copyButton = document.querySelector<HTMLButtonElement>('#copy-email');
     const copyStatus = document.querySelector<HTMLElement>('#copy-status');
     const urgentSuggestion = document.querySelector<HTMLElement>('#urgent-suggestion');
@@ -305,6 +334,8 @@ import { forms, socials } from '../../config';
       const [year, month, day] = value.split('-');
       return year && month && day ? `${day}/${month}/${year}` : value;
     };
+
+    const encodeMailtoValue = (value: string) => encodeURIComponent(value);
 
     const buildEmail = () => {
       const address = fieldValue('address') || '[insert full address]';
@@ -369,15 +400,33 @@ ${contactLines}`.replace(/\n{3,}/g, '\n\n');
       if (ccElement) ccElement.textContent = cc || 'Not selected';
       if (urgentSuggestion) urgentSuggestion.hidden = !urgencySuggested;
       if (openEmail) {
-        const params = new URLSearchParams({ subject, body });
-        if (cc) params.set('cc', cc);
-        openEmail.href = `mailto:belmont@belmont.wa.gov.au?${params.toString()}`;
+        const params = [`subject=${encodeMailtoValue(subject)}`, `body=${encodeMailtoValue(body)}`];
+        if (cc) params.push(`cc=${encodeMailtoValue(cc)}`);
+        openEmail.href = `mailto:belmont@belmont.wa.gov.au?${params.join('&')}`;
       }
 
       return { subject, body, cc };
     };
 
     form?.addEventListener('input', buildEmail);
+    copyToButton?.addEventListener('click', async () => {
+      const { cc } = buildEmail();
+      try {
+        await navigator.clipboard.writeText(`belmont@belmont.wa.gov.au${cc ? `\nCC: ${cc}` : ''}`);
+        if (copyStatus) copyStatus.textContent = 'Email address copied.';
+      } catch {
+        if (copyStatus) copyStatus.textContent = 'Copy failed. You can type the address manually.';
+      }
+    });
+    copySubjectButton?.addEventListener('click', async () => {
+      const { subject } = buildEmail();
+      try {
+        await navigator.clipboard.writeText(subject);
+        if (copyStatus) copyStatus.textContent = 'Subject copied.';
+      } catch {
+        if (copyStatus) copyStatus.textContent = 'Copy failed. You can type the subject manually.';
+      }
+    });
     copyButton?.addEventListener('click', async () => {
       const { subject, body, cc } = buildEmail();
       const headers = `To: belmont@belmont.wa.gov.au\n${cc ? `CC: ${cc}\n` : ''}Subject: ${subject}`;
