@@ -55,6 +55,24 @@ Past events move to the "Past events" list automatically based on their date.
 3. Fill in the details, write the story, set `draft: false`.
 4. (Optional) Add a photo under `public/images/projects/<project_folder>/` and reference it in `image:`.
 5. Commit and deploy.
+
+### Add an advocacy submission
+
+1. Copy `src/content/advocacySubmissions/_TEMPLATE.md`.
+2. Rename it (e.g. `transport-plan-2026-08-16.md`).
+3. Fill in all frontmatter fields and set `draft: false`.
+4. Commit and deploy.
+
+The Advocacy page and home-page advocacy counters update automatically from this collection.
+
+### Add an advocacy campaign
+
+1. Copy `src/content/advocacyCampaigns/_TEMPLATE.md`.
+2. Rename it using the campaign slug (e.g. `protect-a-tree.md`).
+3. Set campaign metadata and advocacy assist event keys.
+4. Commit and deploy.
+
+This collection is the scalable source of truth for future advocacy campaign metrics.
 <!--
 // ### If a new event or project does not appear
 //
@@ -124,3 +142,23 @@ option that connect straight to Git repo and support custom domains:
   and publish directory `dist`, then add the purchased domain in the Netify dashboard.
 
 For traditional/cPanel hosting: run `npm run build` and upload the contents of `dist/`.
+
+## Advocacy analytics sync
+
+Advocacy assist counts are recorded server-side by a Netlify Function backed by
+Netlify Blobs (`netlify/functions/advocacy-assist.mjs`, served at
+`/api/advocacy-assist`). The committed snapshot in `src/data/advocacy-metrics.ts`
+is refreshed from that endpoint by automation (not edited by hand).
+
+- Local/manual sync: `npm run sync:advocacy-metrics`
+- Snapshot check mode: `npm run check:advocacy-metrics`
+- GitHub workflow: `.github/workflows/advocacy-metrics-sync.yml` (daily + manual dispatch)
+
+Configuration for the sync script and workflow:
+
+- `SITE_URL` (deployed site origin, e.g. `https://your-site.netlify.app`)
+- Optional: `ADVOCACY_ASSIST_ENDPOINT` (full endpoint URL override)
+
+The pages show live totals via a progressive-enhancement fetch to
+`/api/advocacy-assist`, falling back to the committed snapshot when the endpoint
+is unavailable (e.g. local `astro dev` without functions).

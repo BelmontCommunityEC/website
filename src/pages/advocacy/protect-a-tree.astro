@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { forms, socials } from '../../config';
+import { advocacyMetrics } from '../../data/advocacy-metrics';
+
+const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ?? 0;
 ---
 
 <BaseLayout
@@ -28,6 +31,8 @@ import { forms, socials } from '../../config';
   </section>
 
   <main class="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
+
+
     <section aria-labelledby="email-builder-heading">
       <h2 id="email-builder-heading" class="font-heading text-2xl font-bold text-brand-dark">
         Draft your email
@@ -276,6 +281,26 @@ import { forms, socials } from '../../config';
       <p id="copy-status" class="mt-3 min-h-5 text-sm font-semibold text-brand" aria-live="polite"></p>
     </section>
 
+    <section aria-label="Protect a tree stats">
+      <div class="rounded-xl bg-surface p-4 sm:p-6" style="margin-top: 20px;">
+        <dl class="grid grid-cols-1 gap-2 sm:max-w-xs">
+          <div class="text-center sm:text-left">
+            <dd
+              data-assist-count="protect-a-tree"
+              class="font-heading text-3xl font-bold text-brand"
+            >
+              {protectATreeAssists.toLocaleString('en-AU')}
+            </dd>
+            <dt class="text-xs uppercase tracking-wide text-muted">Protect a tree assists</dt>
+          </div>
+        </dl>
+        <p class="mt-3 max-w-[80ch] text-sm leading-relaxed text-muted">
+          We have counted <span data-assist-count="protect-a-tree">{protectATreeAssists.toLocaleString('en-AU')}</span> advocacy assists through
+          this template tool so far. Nice work Belmont - every action helps protect more local trees.
+        </p>
+      </div>
+    </section>
+
     <section class="mt-12 border-t border-brand-light pt-10" aria-labelledby="keep-involved-heading">
       <h2 id="keep-involved-heading" class="font-heading text-2xl font-bold text-brand-dark">
         More from BCEC
@@ -311,6 +336,65 @@ import { forms, socials } from '../../config';
     const copyButton = document.querySelector<HTMLButtonElement>('#copy-email');
     const copyStatus = document.querySelector<HTMLElement>('#copy-status');
     const urgentSuggestion = document.querySelector<HTMLElement>('#urgent-suggestion');
+    const trackedAssistButtons = new Set<string>();
+    const lastTrackedAt = new Map<string, number>();
+    const trackThrottleMs = 1500;
+    const assistCampaign = 'protect-a-tree';
+    const assistNumberFormat = new Intl.NumberFormat('en-AU');
+
+    const updateAssistCount = (value: unknown) => {
+      if (typeof value !== 'number' || !Number.isFinite(value)) return;
+      document
+        .querySelectorAll<HTMLElement>('[data-assist-count="protect-a-tree"]')
+        .forEach((el) => {
+          el.textContent = assistNumberFormat.format(value);
+        });
+    };
+
+    // Show the live server-verified count on load (static snapshot is the
+    // fallback if the endpoint is unreachable, e.g. local dev without functions).
+    const loadAssistCount = async () => {
+      try {
+        const response = await fetch('/api/advocacy-assist', {
+          headers: { Accept: 'application/json' },
+        });
+        if (!response.ok) return;
+        const data = await response.json();
+        updateAssistCount(data?.campaigns?.['protect-a-tree']);
+      } catch {
+        // Keep the static snapshot value on any error.
+      }
+    };
+
+    // Server-verified assist counter (Netlify Function + Blobs). Best-effort and
+    // non-blocking: failures never interrupt the user's email workflow.
+    const recordServerAssist = (event: string) => {
+      try {
+        void fetch('/api/advocacy-assist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ campaign: assistCampaign, event }),
+          keepalive: true,
+        })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((data) => updateAssistCount(data?.campaignTotal))
+          .catch(() => {});
+      } catch {
+        // Ignore — tracking must never block the user.
+      }
+    };
+
+    const trackAssist = (buttonKey: string, event: string) => {
+      const now = Date.now();
+      const last = lastTrackedAt.get(buttonKey) ?? 0;
+      if (trackedAssistButtons.has(buttonKey) || now - last < trackThrottleMs) return;
+
+      lastTrackedAt.set(buttonKey, now);
+      trackedAssistButtons.add(buttonKey);
+
+      // Record to the server-verified counter (Netlify Function + Blobs).
+      recordServerAssist(event);
+    };
 
     const fieldValue = (name: string) => {
       const field = form?.elements.namedItem(name);
@@ -409,6 +493,9 @@ ${contactLines}`.replace(/\n{3,}/g, '\n\n');
     };
 
     form?.addEventListener('input', buildEmail);
+    openEmail?.addEventListener('click', () => {
+      trackAssist('open-email', 'advocacy-protect-tree-open-email');
+    });
     copyToButton?.addEventListener('click', async () => {
       const { cc } = buildEmail();
       try {
@@ -432,6 +519,7 @@ ${contactLines}`.replace(/\n{3,}/g, '\n\n');
       const headers = `To: belmont@belmont.wa.gov.au\n${cc ? `CC: ${cc}\n` : ''}Subject: ${subject}`;
       try {
         await navigator.clipboard.writeText(`${headers}\n\n${body}`);
+        trackAssist('copy-email', 'advocacy-protect-tree-copy-full-email');
         if (copyStatus) copyStatus.textContent = 'Email copied to clipboard.';
       } catch {
         if (copyStatus) copyStatus.textContent = 'Copy failed. Select and copy the email text above.';
@@ -439,5 +527,6 @@ ${contactLines}`.replace(/\n{3,}/g, '\n\n');
     });
 
     buildEmail();
+    loadAssistCount();
   </script>
 </BaseLayout>

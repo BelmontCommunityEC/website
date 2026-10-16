@@ -20,7 +20,7 @@ pnpm-debug.log*
 .DS_Store
 
 # private documents (kept locally, never committed or deployed)
-acquittals/
+documentation/
 
 # Local Netlify folder
 .netlify

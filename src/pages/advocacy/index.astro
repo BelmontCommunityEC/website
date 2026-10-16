@@ -1,42 +1,21 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { advocacyMetrics } from '../../data/advocacy-metrics';
 
-const submissions = [
-  {
-    title: 'Draft Sustainable Transport Strategy 2026–2031',
-    type: 'Consultation submission',
-    date: '16 August 2026',
-    dateTime: '2026-08-16',
-    recipient: 'City of Belmont',
-    summary:
-      'BCEC recommends measuring low-stress cycling connectivity and access to everyday destinations, establishing a verified baseline, setting a measurable 2031 target, and reporting progress publicly.',
-    documents: [
-      {
-        label: 'View full submission (PDF)',
-        href: '/submissions/bcec-sustainable-transport-strategy-submission-2026-08-16.pdf',
-      },
-      {
-        label: 'View cover letter (PDF)',
-        href: '/submissions/bcec-sustainable-transport-strategy-cover-letter-2026-08-16.pdf',
-      },
-    ],
-  },
-  {
-    title: 'Draft Local Planning Policy No. 21',
-    type: 'Letter of support',
-    date: '13 May 2026',
-    dateTime: '2026-05-13',
-    recipient: 'City of Belmont',
-    summary:
-      'BCEC supports planning measures that protect established trees, improve urban canopy outcomes, strengthen neighbourhood liveability, and provide clear implementation guidance.',
-    documents: [
-      {
-        label: 'View letter of support (PDF)',
-        href: '/submissions/bcec-submission-draft-local-planning-policy-21-2026-05-13.pdf',
-      },
-    ],
-  },
-];
+const dateFmt = new Intl.DateTimeFormat('en-AU', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const submissions = (await getCollection('advocacySubmissions'))
+  .filter((entry) => !entry.id.startsWith('_') && !entry.filePath?.toLowerCase().includes('_template.md'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const submissionsLodged = submissions.length;
+const advocacyAssists = advocacyMetrics.advocacyAssistsTotal;
+const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ?? 0;
 ---
 
 <BaseLayout
@@ -77,6 +56,49 @@ const submissions = [
         Create a tree concern email
       </a>
     </div>
+
+    <div class="mt-8 grid gap-4 sm:grid-cols-[2fr_1fr] sm:gap-6">
+      <div class="rounded-xl bg-surface p-4 sm:p-6">
+        <dl class="grid grid-cols-2 gap-3 sm:gap-4">
+          <div class="text-center">
+            <dd
+              id="advocacy-assists-count"
+              data-assist-count="total"
+              class="font-heading text-2xl font-bold text-brand sm:text-3xl"
+            >
+              {advocacyAssists.toLocaleString('en-AU')}
+            </dd>
+            <dt class="text-xs uppercase tracking-wide text-muted">Advocacy assists</dt>
+          </div>
+          <div class="text-center">
+            <dd
+              id="protect-a-tree-count"
+              data-assist-count="protect-a-tree"
+              class="font-heading text-2xl font-bold text-brand sm:text-3xl"
+            >
+              {protectATreeAssists.toLocaleString('en-AU')}
+            </dd>
+            <dt class="text-xs uppercase tracking-wide text-muted">Protect a tree</dt>
+          </div>
+        </dl>
+        <p class="mt-4 text-sm leading-relaxed text-muted">
+          Every advocacy assist is a real action a Belmont resident has taken to speak up for
+          our local environment. Right now that's people using our Protect a tree tool, and
+          we'll add more as new community campaigns launch.
+        </p>
+      </div>
+
+      <div class="rounded-xl bg-surface p-4 sm:p-6">
+        <dl class="grid grid-cols-1 gap-2 text-center sm:h-full sm:content-center">
+          <div>
+            <dd class="font-heading text-2xl font-bold text-brand sm:text-3xl">
+              {submissionsLodged.toLocaleString('en-AU')}
+            </dd>
+            <dt class="text-xs uppercase tracking-wide text-muted">Submissions lodged</dt>
+          </div>
+        </dl>
+      </div>
+    </div>
   </section>
 
   <section id="submissions" class="mx-auto max-w-5xl scroll-mt-24 px-4 pb-12 sm:px-6">
@@ -93,9 +115,9 @@ const submissions = [
             <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <h3 class="font-heading text-lg font-bold text-brand-dark sm:text-xl">
-                  {submission.title}
+                  {submission.data.title}
                 </h3>
-                <p class="mt-1 text-sm text-muted">{submission.type}</p>
+                <p class="mt-1 text-sm text-muted">{submission.data.type}</p>
               </div>
               <span class="inline-flex w-fit rounded-full bg-brand px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
                 Submitted
@@ -105,18 +127,22 @@ const submissions = [
             <dl class="mt-5 grid gap-3 text-sm text-ink sm:grid-cols-2">
               <div>
                 <dt class="font-semibold text-brand-dark">Date</dt>
-                <dd><time datetime={submission.dateTime}>{submission.date}</time></dd>
+                <dd>
+                  <time datetime={submission.data.date.toISOString()}>
+                    {dateFmt.format(submission.data.date)}
+                  </time>
+                </dd>
               </div>
               <div>
                 <dt class="font-semibold text-brand-dark">Recipient</dt>
-                <dd>{submission.recipient}</dd>
+                <dd>{submission.data.recipient}</dd>
               </div>
             </dl>
 
-            <p class="mt-5 text-sm leading-relaxed text-ink sm:text-base">{submission.summary}</p>
+            <p class="mt-5 text-sm leading-relaxed text-ink sm:text-base">{submission.data.summary}</p>
 
             <div class="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-              {submission.documents.map((document) => (
+              {submission.data.documents.map((document) => (
                 <a
                   href={document.href}
                   target="_blank"
@@ -132,4 +158,38 @@ const submissions = [
       }
     </div>
   </section>
+
+  <script>
+    // Progressive enhancement: replace the build-time snapshot numbers with the
+    // live server-verified totals when the endpoint is reachable. If the fetch
+    // fails (e.g. local dev without functions), the static numbers remain.
+    const numberFormat = new Intl.NumberFormat('en-AU');
+
+    const applyLiveCounts = async () => {
+      try {
+        const response = await fetch('/api/advocacy-assist', {
+          headers: { Accept: 'application/json' },
+        });
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const campaigns =
+          data && typeof data.campaigns === 'object' && data.campaigns !== null
+            ? data.campaigns
+            : {};
+
+        document.querySelectorAll<HTMLElement>('[data-assist-count]').forEach((el) => {
+          const key = el.dataset.assistCount ?? '';
+          const value = key === 'total' ? data?.total : campaigns[key];
+          if (typeof value === 'number' && Number.isFinite(value)) {
+            el.textContent = numberFormat.format(value);
+          }
+        });
+      } catch {
+        // Keep the static snapshot values on any error.
+      }
+    };
+
+    applyLiveCounts();
+  </script>
 </BaseLayout>

@@ -23,6 +23,8 @@ the website rebuilds itself. The golden rules:
 | Events (upcoming & past)     | `src/content/events/` (one file per event)                              |
 | Photos                       | `public/images/projects/` (organised by project/event subfolders) |
 | Grants not tied to a project | `src/content/grants/` (one file per grant)                              |
+| Advocacy campaigns           | `src/content/advocacyCampaigns/` (one file per campaign)                |
+| Advocacy submissions         | `src/content/advocacySubmissions/` (one file per submission)            |
 | Blank starter templates      | `_TEMPLATE.md` in each of the folders above                             |
 
 ---
@@ -257,6 +259,44 @@ rather than a public project — for example the **Swan Volunteer Grant ($2,500)
 We still count the money and credit the funder, but we don't create a thin
 project page. These grants live in their own markdown folder,
 `src/content/grants/` — **one file per grant**, just like projects and events.
+
+---
+
+## Adding an advocacy submission
+
+Use this when BCEC has lodged a formal letter or consultation response and you
+want it listed on the Advocacy page and included in the **Submissions lodged**
+counter.
+
+1. Open `src/content/advocacySubmissions/`.
+2. Copy `_TEMPLATE.md` and rename it with lowercase words and dashes.
+3. Fill in all fields in the frontmatter:
+  - `title`, `type`, `date`, `recipient`, `summary`
+  - `documents` list with one or more `label` + `href` pairs
+  - `draft: false` when ready to publish
+4. Save and preview.
+
+Notes:
+
+- The file body under the second `---` can stay short.
+- The advocacy page list and counters update automatically from these files.
+
+---
+
+## Advocacy metrics (ADVOCACY ASSISTS)
+
+The **ADVOCACY ASSISTS** and campaign assist totals are stored in:
+
+- `src/data/advocacy-metrics.ts`
+
+This file is refreshed by automation from the advocacy assist counter endpoint
+(`/api/advocacy-assist`). Do not
+hand-edit these numbers unless troubleshooting.
+
+Operational commands:
+
+- `npm run sync:advocacy-metrics` (refresh snapshot)
+- `npm run check:advocacy-metrics` (verify snapshot is current)
 
 ### Step — Create the grant file
 

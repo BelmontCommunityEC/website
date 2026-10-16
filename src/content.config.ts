@@ -291,4 +291,56 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { projects, events, grants };
+/**
+ * ADVOCACY CAMPAIGNS collection — campaign-level metadata used to scale
+ * advocacy tooling and aggregate per-campaign metrics (e.g. Protect a tree).
+ */
+const advocacyCampaigns = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/advocacyCampaigns' }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+    // Route to the campaign page, e.g. "/advocacy/protect-a-tree".
+    path: z.string(),
+    // Optional short display label for campaign-level metric in ribbon contexts.
+    metricLabel: z.string().optional(),
+    // Event keys that contribute to this campaign total via the advocacy
+    // assist counter (Netlify Function + Blobs).
+    eventKeys: z.array(z.string()).default([]),
+    // Include this campaign in home advocacy roll-up totals.
+    includeInHomeRollup: z.boolean().default(true),
+    draft: z.boolean().default(false),
+  }),
+});
+
+/**
+ * ADVOCACY SUBMISSIONS collection — source of truth for published submission
+ * cards and the auto-updating "SUBMISSIONS LODGED" count.
+ */
+const advocacySubmissions = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/advocacySubmissions' }),
+  schema: z.object({
+    title: z.string(),
+    type: z.string(),
+    date: z.coerce.date(),
+    recipient: z.string(),
+    summary: z.string(),
+    // Optional campaign slug (e.g. "protect-a-tree") for future grouping.
+    campaign: z.string().optional(),
+    documents: z.array(
+      z.object({
+        label: z.string(),
+        href: z.string(),
+      }),
+    ),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = {
+  projects,
+  events,
+  grants,
+  advocacyCampaigns,
+  advocacySubmissions,
+};
