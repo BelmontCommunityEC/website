@@ -11,7 +11,7 @@ const metricsFilePath = path.join(repoRoot, 'src/data/advocacy-metrics.ts');
 
 // Source of truth is the server-verified counter (Netlify Function + Blobs).
 // Override the endpoint with ADVOCACY_ASSIST_ENDPOINT, or the site with SITE_URL.
-const siteUrl = (process.env.SITE_URL ?? 'https://bcec-website-draft.netlify.app').replace(/\/$/, '');
+const siteUrl = (process.env.SITE_URL ?? 'https://www.belmontcommunityec.org.au').replace(/\/$/, '');
 const endpoint = process.env.ADVOCACY_ASSIST_ENDPOINT ?? `${siteUrl}/api/advocacy-assist`;
 
 const checkMode = process.argv.includes('--check');
