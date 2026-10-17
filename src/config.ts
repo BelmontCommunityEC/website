@@ -20,7 +20,7 @@ export const site = {
   description:
     'Belmont Community Environmental Champions (BCEC) is a group of local residents who care deeply for the environmental health of our area. We advocate for and run projects and events that educate and inspire the community to enjoy a cleaner, greener, and more connected local environment.',
   /** Your purchased domain (no trailing slash). Also set this in astro.config.mjs. */
-  url: 'https://www.belmontcommunityec.org.au',
+  url: 'https://belmontcommunityec.org.au',
 };
 
 /**

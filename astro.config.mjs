@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   // Update this when the final custom domain is connected.
   // Used for SEO canonical URLs, sitemap.xml and social share tags.
-  site: 'https://www.belmontcommunityec.org.au',
+  site: 'https://belmontcommunityec.org.au',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
