@@ -125,23 +125,6 @@ const advocacyItems = [
 
 const allItems = [...items, ...advocacyItems];
 
-const allItemsColClass =
-  allItems.length >= 8
-    ? 'grid-cols-2 sm:grid-cols-4 lg:grid-cols-8'
-    : allItems.length === 7
-      ? 'grid-cols-2 sm:grid-cols-4 lg:grid-cols-7'
-      : allItems.length === 6
-        ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-6'
-        : allItems.length === 5
-          ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5'
-          : allItems.length === 4
-            ? 'grid-cols-2 sm:grid-cols-4'
-            : allItems.length === 3
-              ? 'grid-cols-1 sm:grid-cols-3'
-              : allItems.length === 2
-                ? 'grid-cols-2'
-                : 'grid-cols-1';
-
 // Community fundraising (e.g. a Bunnings sausage sizzle) is money we raised
 // ourselves — shown as its OWN line, never folded into grant funding.
 const raisedTotal = pastEvents.reduce((sum, e) => sum + (e.data.raised ?? 0), 0);
@@ -183,10 +166,10 @@ const raisedDisplay =
         </div>
       )}
       {allItems.length > 0 && (
-        <dl class:list={['grid gap-4 text-center', allItemsColClass]}>
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-6 text-center min-[375px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
           {allItems.map((item) => (
             <div>
-              <dt class="order-2 text-xs uppercase tracking-wide text-muted">{item.label}</dt>
+              <dt class="order-2 whitespace-nowrap text-xs uppercase tracking-wide text-muted">{item.label}</dt>
               <dd class="order-1 font-heading text-3xl font-bold text-brand">{item.display}</dd>
             </div>
           ))}
