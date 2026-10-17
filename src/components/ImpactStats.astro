@@ -116,6 +116,7 @@ const advocacyItems = [
   {
     label: 'Advocacy assists',
     display: advocacyMetrics.advocacyAssistsTotal.toLocaleString('en-AU'),
+    assistCount: 'total',
   },
   {
     label: 'Submissions lodged',
@@ -170,7 +171,10 @@ const raisedDisplay =
           {allItems.map((item) => (
             <div>
               <dt class="order-2 whitespace-nowrap text-xs uppercase tracking-wide text-muted">{item.label}</dt>
-              <dd class="order-1 font-heading text-3xl font-bold text-brand">{item.display}</dd>
+              <dd
+                data-impact-assist-count={'assistCount' in item ? item.assistCount : undefined}
+                class="order-1 font-heading text-3xl font-bold text-brand"
+              >{item.display}</dd>
             </div>
           ))}
         </dl>
@@ -178,3 +182,23 @@ const raisedDisplay =
     </section>
   )
 }
+
+<script>
+  const applyLiveImpactCount = async () => {
+    try {
+      const response = await fetch('/api/advocacy-assist', {
+        headers: { Accept: 'application/json' },
+      });
+      if (!response.ok) return;
+
+      const data = await response.json();
+      if (typeof data?.total !== 'number' || !Number.isFinite(data.total)) return;
+
+      document.querySelectorAll<HTMLElement>('[data-impact-assist-count="total"]').forEach((element) => {
+        element.textContent = new Intl.NumberFormat('en-AU').format(data.total);
+      });
+    } catch {}
+  };
+
+  applyLiveImpactCount();
+</script>
