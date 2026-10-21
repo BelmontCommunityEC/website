@@ -59,6 +59,12 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
 
     <div class="mt-8 rounded-xl bg-surface p-4 sm:p-6">
       <dl class="grid grid-cols-2 items-start gap-4 text-center sm:grid-cols-3 sm:gap-6">
+        <div class="col-span-2 flex flex-col sm:col-span-1">
+          <dt class="order-2 text-xs uppercase tracking-wide text-muted">Submissions lodged</dt>
+          <dd class="order-1 font-heading text-3xl font-bold tabular-nums text-brand">
+            {submissionsLodged.toLocaleString('en-AU')}
+          </dd>
+        </div>
         <div class="flex flex-col">
           <dt class="order-2 text-xs uppercase tracking-wide text-muted">Advocacy assists</dt>
           <dd
@@ -79,17 +85,12 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
             {protectATreeAssists.toLocaleString('en-AU')}
           </dd>
         </div>
-        <div class="col-span-2 flex flex-col sm:col-span-1">
-          <dt class="order-2 text-xs uppercase tracking-wide text-muted">Submissions lodged</dt>
-          <dd class="order-1 font-heading text-3xl font-bold tabular-nums text-brand">
-            {submissionsLodged.toLocaleString('en-AU')}
-          </dd>
-        </div>
       </dl>
       <p class="mt-5 border-t border-brand-light pt-4 text-sm leading-relaxed text-muted">
-        Every advocacy assist is a real action a Belmont resident has taken to speak up for
-        our local environment. Right now that's people using our Protect a tree tool, and
-        we'll add more as new community campaigns launch.
+        We make submissions and write to decision-makers to stand up for Belmont’s environment.
+        We also help our community speak up through tools like Protect a tree. Each time someone
+        opens or copies their draft email, we count an advocacy assist: a time we’ve helped
+        someone prepare to advocate for our local environment.
       </p>
     </div>
   </section>
