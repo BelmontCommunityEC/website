@@ -4,6 +4,7 @@ import { forms, socials } from '../../config';
 import { advocacyMetrics } from '../../data/advocacy-metrics';
 
 const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ?? 0;
+const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-no-21-tree-development-exemption-and-assessment-policy.pdf';
 ---
 
 <BaseLayout
@@ -13,52 +14,57 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
 >
   <section class="bg-brand-light/50">
     <div class="mx-auto max-w-5xl px-4 py-6 sm:px-6">
-      <a href="/advocacy" class="block text-sm font-medium text-brand hover:underline">
-        ← Advocacy
-      </a>
-      <p class="mt-4 inline-flex rounded-full bg-brand-dark px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
-        Take action
-      </p>
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <a href="/advocacy" class="inline-flex min-h-11 items-center text-sm font-semibold text-brand-dark hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
+          ← Advocacy
+        </a>
+        <p class="inline-flex rounded-full bg-brand-dark px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+          Take action
+        </p>
+      </div>
       <h1 class="mt-4 font-heading text-3xl font-bold text-brand-dark sm:text-4xl">
         Protect a tree
       </h1>
       <p class="mt-4 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">
-        Use this email template tool to draft a message to the City of Belmont about a private
-        tree that may be at risk of removal or damage. This tool does not submit a report or send
-        the email for you.
+        You can help protect trees in Belmont, even if they aren’t on your property. If a tree
+        is at risk of removal or damage, speak up early.
       </p>
+      <p class="mt-4 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">
+        The City of Belmont’s Local Planning Policy No. 21 helps protect larger trees on private
+        land. Unless an exemption applies, removing or damaging trees that meet its size thresholds
+        requires development approval. Reporting your concerns to the City’s Planning Compliance
+        team helps it investigate and take action if rules are being broken. You don’t need to
+        prove a breach.
+      </p>
+      <a
+        href={policyUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-brand-dark underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      >
+        Read the City’s Local Planning Policy No. 21 (PDF, opens in a new tab)
+      </a>
     </div>
   </section>
 
-  <main class="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
-    <section aria-label="Protect a tree stats">
-      <dl class="grid grid-cols-1 gap-3 rounded-xl bg-surface p-4 sm:max-w-xs sm:p-6">
-        <div class="text-center">
-          <dd class="font-heading text-3xl font-bold text-brand">
-            {protectATreeAssists.toLocaleString('en-AU')}
-          </dd>
-          <dt class="text-xs uppercase tracking-wide text-muted">Protect a tree</dt>
-        </div>
-      </dl>
-    </section>
-
+  <div class="mx-auto max-w-5xl px-4 pt-6 pb-10 sm:px-6 sm:py-12">
     <section aria-labelledby="email-builder-heading">
       <h2 id="email-builder-heading" class="font-heading text-2xl font-bold text-brand-dark">
         Draft your email
       </h2>
       <p class="mt-3 max-w-3xl text-sm leading-relaxed text-muted sm:text-base">
-        Use this form to prepare an email. Answer what you can and leave
-        anything you are unsure about blank. The tool turns your answers into a draft below that
-        you review, open in your email app, attach photos to, and send yourself.
+        Answer what you can and leave anything you’re unsure about blank. When your draft is
+        ready, review it, open it in your email app, add any photos, and send it yourself.
       </p>
-      <p class="mt-2 max-w-3xl text-sm leading-relaxed text-muted">
-        The information you enter is processed in your browser and is not saved by this website.
-        It is shared with BCEC only if you choose to copy BCEC into the email and send it.
+      <p class="mt-2 max-w-3xl text-sm leading-relaxed text-muted sm:text-base">
+        Your answers stay in your browser and aren’t saved by this website. BCEC only receives
+        them if you choose to copy us into the email and send it. We count how often people
+        open or copy a draft, but don’t collect your answers as part of that count.
       </p>
       <p class="mt-4 rounded-lg border-l-4 border-brand bg-brand-light/40 p-4 text-sm leading-relaxed text-ink">
-        If removal or damaging work is underway or appears imminent, contact the City on{' '}
-        <a href="tel:0894777222" class="font-semibold text-brand underline underline-offset-2">(08) 9477 7222</a>{' '}
-        and follow up with an email using the template below.
+        If removal or damaging work is underway or appears imminent, call the City right now on{' '}
+        <a href="tel:0894777222" class="font-semibold text-brand-dark underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">(08) 9477 7222</a>{' '}
+        and ask for the Planning Compliance team. Then follow up with an email using the template below.
       </p>
 
       <form id="tree-concern-form" class="mt-8 space-y-10">
@@ -79,12 +85,12 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
 
         <fieldset class="min-w-0">
           <legend class="font-heading text-lg font-bold text-brand-dark">
-            Approximate tree size
+            Tree size and type
           </legend>
           <p class="mt-2 text-sm leading-relaxed text-muted">
             Select each measurement that appears to apply. Leave it blank if you are unsure.
           </p>
-          <div class="mt-4 grid gap-4">
+          <div class="mt-4 grid gap-3">
             {[
               {
                 name: 'height',
@@ -111,49 +117,77 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
               </label>
             ))}
           </div>
+          <label class="mt-3 flex min-h-11 cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 hover:border-brand-light">
+            <input
+              id="exempt-tree-type"
+              type="checkbox"
+              name="exemptTreeType"
+              aria-describedby="exempt-tree-help"
+              aria-controls="exempt-tree-guidance"
+              class="mt-1 h-5 w-5 flex-none accent-brand"
+            />
+            <span>
+              <span class="block text-sm font-semibold leading-relaxed text-ink">
+                The tree is a palm, pencil pine or a species listed on a State or local weed register.
+              </span>
+              <span id="exempt-tree-help" class="mt-2 block text-xs leading-relaxed text-muted">
+                Only select this if you’re confident. If you’re unsure, leave it unchecked.
+              </span>
+            </span>
+          </label>
+          <div aria-live="polite" aria-atomic="true">
+            <div id="exempt-tree-guidance" hidden class="mt-4 rounded-xl border border-brand-light bg-brand-light/30 p-4 sm:p-6">
+              <h3 class="font-heading text-lg font-bold text-brand-dark">Thanks for looking out for our local trees.</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">
+                Under the policy, palms, pencil pines and listed weed species are generally
+                exempt from needing approval for removal or damage, regardless of their size.
+                For these trees, this email template isn’t the right next step, so we’ve paused it here.
+              </p>
+              <p class="mt-3 text-sm leading-relaxed text-muted">
+                A Tree Preservation Order may still provide protection. If you know one applies,
+                or you’re unsure about the tree’s type or protection, check with the City on{' '}
+                <a href="tel:0894777222" class="font-semibold text-brand-dark underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">(08) 9477 7222</a>{' '}
+                before proceeding.
+              </p>
+              <p class="mt-3 text-sm leading-relaxed text-muted">
+                Selected this by mistake? Uncheck the option above to continue. Your answers will still be here.
+              </p>
+              <p class="mt-3 text-sm leading-relaxed text-muted">
+                Check the size and species exemptions in clauses 5.1.1(a)–(b) of{' '}
+                <a href={policyUrl} target="_blank" rel="noopener noreferrer" class="font-semibold text-brand-dark underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
+                  the City’s Local Planning Policy No. 21 (PDF, opens in a new tab)
+                </a>.
+              </p>
+            </div>
+          </div>
         </fieldset>
 
-        <fieldset class="min-w-0">
+        <fieldset class="min-w-0" data-email-workflow>
           <legend class="font-heading text-lg font-bold text-brand-dark">
             Why do you believe the tree may be at risk?
           </legend>
           <div class="mt-4 grid gap-3 sm:grid-cols-2">
             <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
-              <input type="checkbox" name="riskReason" value="the property was recently sold or listed for sale" class="mt-1 h-5 w-5 flex-none accent-brand" />
-              <span>The property was recently sold or listed for sale.</span>
-            </label>
-            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
-              <input type="checkbox" name="riskReason" value="building, demolition or renovation work appears to be planned" class="mt-1 h-5 w-5 flex-none accent-brand" />
-              <span>Building, demolition or renovation work appears to be planned.</span>
-            </label>
-            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
-              <input type="checkbox" name="riskReason" value="contractors, machinery or tree-removal equipment have been observed" data-suggest-urgent class="mt-1 h-5 w-5 flex-none accent-brand" />
-              <span>Contractors, machinery or tree-removal equipment have been observed.</span>
+              <input type="checkbox" name="riskReason" value="removal or damaging work is happening now" data-suggest-urgent class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>Removal or damaging work is happening now.</span>
             </label>
             <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
               <input type="checkbox" name="riskReason" value="clearing, excavation or other work has begun near the tree" data-suggest-urgent class="mt-1 h-5 w-5 flex-none accent-brand" />
               <span>Clearing, excavation or other work has begun near the tree.</span>
             </label>
             <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="contractors, machinery or tree-removal equipment have been observed" data-suggest-urgent class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>Contractors, machinery or tree-removal equipment have been observed.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
               <input type="checkbox" name="riskReason" value="the tree appears to have been marked for removal" data-suggest-urgent class="mt-1 h-5 w-5 flex-none accent-brand" />
               <span>The tree appears to have been marked for removal.</span>
             </label>
-            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
-              <input type="checkbox" name="riskReason" value="I have been told that the tree may be removed" class="mt-1 h-5 w-5 flex-none accent-brand" />
-              <span>I have been told that the tree may be removed.</span>
-            </label>
-            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
-              <input type="checkbox" name="riskReason" value="removal or damaging work is happening now" data-suggest-urgent class="mt-1 h-5 w-5 flex-none accent-brand" />
-              <span>Removal or damaging work is happening now.</span>
-            </label>
-            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
-              <input type="checkbox" name="riskReason" value="the tree has already been removed" class="mt-1 h-5 w-5 flex-none accent-brand" />
-              <span>The tree has already been removed.</span>
-            </label>
-            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
-              <input type="checkbox" name="riskReason" value="the tree has been heavily pruned, lopped or topped" class="mt-1 h-5 w-5 flex-none accent-brand" />
-              <span>The tree has been heavily pruned, lopped or topped.</span>
-            </label>
+            <p id="urgent-suggestion" class="rounded-lg border-l-4 border-brand bg-brand-light/40 p-4 text-sm leading-relaxed text-ink sm:col-span-2" hidden aria-live="polite">
+              Your answers suggest this concern may be urgent. If removal or damaging work is underway or appears imminent, call the City right now on{' '}
+              <a href="tel:0894777222" class="font-semibold text-brand-dark underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">(08) 9477 7222</a>{' '}
+              and ask for the Planning Compliance team. Then follow up with the email drafted below.
+            </p>
             <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
               <input type="checkbox" name="riskReason" value="the tree appears to have been ringbarked or poisoned" class="mt-1 h-5 w-5 flex-none accent-brand" />
               <span>The tree appears to have been ringbarked or poisoned.</span>
@@ -162,16 +196,31 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
               <input type="checkbox" name="riskReason" value="the tree has otherwise been damaged" class="mt-1 h-5 w-5 flex-none accent-brand" />
               <span>The tree has otherwise been damaged.</span>
             </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="the tree has been heavily pruned, lopped or topped" class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>The tree has been heavily pruned, lopped or topped.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="I have been told that the tree may be removed" class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>I have been told that the tree may be removed.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="building, demolition or renovation work appears to be planned" class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>Building, demolition or renovation work appears to be planned.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="the property was recently sold or listed for sale" class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>The property was recently sold or listed for sale.</span>
+            </label>
+            <label class="flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
+              <input type="checkbox" name="riskReason" value="the tree has already been removed" class="mt-1 h-5 w-5 flex-none accent-brand" />
+              <span>The tree has already been removed.</span>
+            </label>
           </div>
           <label for="risk-other" class="mt-4 block text-sm font-semibold text-ink">
             Describe what you observed or add other details
           </label>
           <textarea id="risk-other" name="riskOther" rows="3" class="mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"></textarea>
-          <p id="urgent-suggestion" class="mt-4 rounded-lg border-l-4 border-brand bg-brand-light/40 p-4 text-sm leading-relaxed text-ink" hidden aria-live="polite">
-            Your answers suggest this concern may be urgent. If removal or damaging work is underway or appears imminent, contact the City on{' '}
-            <a href="tel:0894777222" class="font-semibold text-brand underline underline-offset-2">(08) 9477 7222</a>{' '}
-            and follow up with the email drafted below.
-          </p>
           <label class="mt-4 flex cursor-pointer gap-3 rounded-lg border border-brand-light bg-brand-light/30 p-4">
             <input type="checkbox" name="urgent" class="mt-1 h-5 w-5 flex-none accent-brand" />
             <span>
@@ -181,7 +230,7 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
           </label>
         </fieldset>
 
-        <fieldset class="min-w-0">
+        <fieldset class="min-w-0" data-email-workflow>
           <legend class="font-heading text-lg font-bold text-brand-dark">Photos and your details</legend>
           <label class="mt-4 flex cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 text-sm leading-relaxed hover:border-brand-light">
             <input type="checkbox" name="hasPhotos" class="mt-1 h-5 w-5 flex-none accent-brand" />
@@ -226,7 +275,7 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
       </form>
     </section>
 
-    <section class="mt-12 rounded-2xl border border-brand-light bg-surface/70 p-5 sm:p-6" aria-labelledby="preview-heading">
+    <section class="mt-10 rounded-xl border border-brand-light bg-surface p-4 sm:mt-12 sm:p-6" aria-labelledby="preview-heading" data-email-workflow>
       <div class="border-b border-brand-light pb-4">
         <h2 id="preview-heading" class="font-heading text-2xl font-bold text-brand-dark">
           Review your email
@@ -243,16 +292,14 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
           </p>
         </div>
       </div>
-      <div class="mt-4 rounded-xl border border-brand-light bg-brand-light/15 p-4">
-        <a
-          id="open-email"
-          href="mailto:belmont@belmont.wa.gov.au"
-          class="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-brand px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-        >
-          Open draft in your email app
-        </a>
-      </div>
-      <dl class="mt-4 grid gap-2 text-sm sm:grid-cols-[5rem_1fr]">
+      <a
+        id="open-email"
+        href="mailto:belmont@belmont.wa.gov.au"
+        class="mt-5 inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:w-auto"
+      >
+        Open draft in your email app
+      </a>
+      <dl class="mt-5 grid gap-2 text-sm wrap-anywhere sm:grid-cols-[5rem_minmax(0,1fr)]">
         <dt class="font-semibold text-brand-dark">To</dt>
         <dd>belmont@belmont.wa.gov.au</dd>
         <dt class="font-semibold text-brand-dark">CC</dt>
@@ -260,8 +307,8 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
         <dt class="font-semibold text-brand-dark">Subject</dt>
         <dd id="email-subject">Tree concern at [insert address]</dd>
       </dl>
-      <pre id="email-preview" class="mt-4 max-h-[34rem] overflow-auto whitespace-pre-wrap rounded-xl border border-gray-200 bg-white p-4 font-body text-sm leading-relaxed text-ink shadow-sm"></pre>
-      <div class="mt-4 rounded-xl border border-brand-light bg-brand-light/15 p-4">
+      <pre id="email-preview" class="mt-4 max-h-[34rem] overflow-auto whitespace-pre-wrap wrap-anywhere rounded-lg border border-gray-200 bg-white p-4 font-body text-sm leading-relaxed text-ink"></pre>
+      <div class="mt-5 border-t border-brand-light pt-5">
         <p class="text-sm font-semibold text-brand-dark">If you need to copy the draft instead</p>
         <div class="mt-3 grid gap-3 sm:grid-cols-3">
           <button
@@ -290,32 +337,81 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
       <p id="copy-status" class="mt-3 min-h-5 text-sm font-semibold text-brand" aria-live="polite"></p>
     </section>
 
-    <section class="mt-12 border-t border-brand-light pt-10" aria-labelledby="keep-involved-heading">
+    <section
+      aria-label="Protect a tree stats"
+      data-email-workflow
+      class="mt-6 grid gap-3 rounded-xl border border-brand-light bg-brand-light/15 p-4 sm:grid-cols-[auto_1fr] sm:items-center sm:gap-6 sm:px-6 sm:py-5"
+    >
+      <dl>
+        <div class="flex items-center gap-3">
+          <dt class="order-2 text-sm font-semibold leading-snug text-brand-dark">
+            Protect a tree<br />assists
+          </dt>
+          <dd
+            data-assist-count="protect-a-tree"
+            class="order-1 shrink-0 font-heading text-3xl font-bold tabular-nums text-brand-dark"
+          >
+            {protectATreeAssists.toLocaleString('en-AU')}
+          </dd>
+        </div>
+      </dl>
+      <p class="text-sm leading-relaxed text-muted sm:border-l sm:border-brand-light sm:pl-6">
+        Nice work, Belmont! By creating your email with this tool, you’re speaking up for local
+        trees and helping care for our environment. That’s +1 to our tally of ‘Protect a tree
+        assists’. Let’s see how many trees we can protect together!
+      </p>
+    </section>
+
+    <section class="mt-10 border-t border-brand-light pt-10 sm:mt-12" aria-labelledby="keep-involved-heading">
       <h2 id="keep-involved-heading" class="font-heading text-2xl font-bold text-brand-dark">
         More from BCEC
       </h2>
       <div class="mt-5 grid gap-3 sm:grid-cols-2">
-        <a href="/submissions/bcec-submission-draft-local-planning-policy-21-2026-05-13.pdf" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
+        <a href="/submissions/bcec-submission-draft-local-planning-policy-21-2026-05-13.pdf" target="_blank" rel="noopener noreferrer" class="related-link">
           Read BCEC’s Local Planning Policy No. 21 support letter
         </a>
-        <a href="/projects" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
+        <a href="/projects" class="related-link">
           Explore BCEC community projects
         </a>
-        <a href="/events" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
+        <a href="/events" class="related-link">
           View upcoming BCEC events
         </a>
-        <a href={forms.membership} target="_blank" rel="noopener noreferrer" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
+        <a href={forms.membership} target="_blank" rel="noopener noreferrer" class="related-link">
           Become a BCEC member
         </a>
-        <a href="/" class="rounded-lg border border-brand-light p-4 font-semibold text-brand-dark transition hover:bg-brand-light/40">
+        <a href="/" class="related-link">
           Visit the BCEC homepage
         </a>
       </div>
     </section>
-  </main>
+  </div>
+
+  <style>
+    @reference '../../styles/global.css';
+
+    /* Keep repeated form cards aligned with the site's bordered secondary actions. */
+    #tree-concern-form label:has(input[type='checkbox']) {
+      @apply min-h-11 transition hover:border-brand focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/20 has-checked:border-brand has-checked:bg-brand-light/15;
+    }
+
+    #tree-concern-form input[type='checkbox'] {
+      @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand;
+    }
+
+    .related-link {
+      @apply flex min-h-11 items-center rounded-lg border border-brand-light bg-white p-4 text-sm font-semibold leading-relaxed text-brand-dark transition hover:border-brand hover:bg-brand-light/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand;
+    }
+
+    [data-email-workflow][hidden] {
+      display: none;
+    }
+  </style>
 
   <script>
     const form = document.querySelector<HTMLFormElement>('#tree-concern-form');
+    const exemptTreeType = document.querySelector<HTMLInputElement>('#exempt-tree-type');
+    const exemptionGuidance = document.querySelector<HTMLElement>('#exempt-tree-guidance');
+    const emailWorkflow = document.querySelectorAll<HTMLElement>('[data-email-workflow]');
     const preview = document.querySelector<HTMLElement>('#email-preview');
     const subjectElement = document.querySelector<HTMLElement>('#email-subject');
     const ccElement = document.querySelector<HTMLElement>('#email-cc');
@@ -328,30 +424,62 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
     const trackedAssistButtons = new Set<string>();
     const lastTrackedAt = new Map<string, number>();
     const trackThrottleMs = 1500;
+    const assistCampaign = 'protect-a-tree';
+    const assistNumberFormat = new Intl.NumberFormat('en-AU');
 
-    const trackAssist = (buttonKey: string, path: string, title: string) => {
+    const updateAssistCount = (value: unknown) => {
+      if (typeof value !== 'number' || !Number.isFinite(value)) return;
+      document
+        .querySelectorAll<HTMLElement>('[data-assist-count="protect-a-tree"]')
+        .forEach((el) => {
+          el.textContent = assistNumberFormat.format(value);
+        });
+    };
+
+    // Show the live server-verified count on load (static snapshot is the
+    // fallback if the endpoint is unreachable, e.g. local dev without functions).
+    const loadAssistCount = async () => {
+      try {
+        const response = await fetch('/api/advocacy-assist', {
+          headers: { Accept: 'application/json' },
+        });
+        if (!response.ok) return;
+        const data = await response.json();
+        updateAssistCount(data?.campaigns?.['protect-a-tree']);
+      } catch {
+        // Keep the static snapshot value on any error.
+      }
+    };
+
+    // Server-verified assist counter (Netlify Function + Blobs). Best-effort and
+    // non-blocking: failures never interrupt the user's email workflow.
+    const recordServerAssist = (event: string) => {
+      try {
+        void fetch('/api/advocacy-assist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ campaign: assistCampaign, event }),
+          keepalive: true,
+        })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((data) => updateAssistCount(data?.campaignTotal))
+          .catch(() => {});
+      } catch {
+        // Ignore — tracking must never block the user.
+      }
+    };
+
+    const trackAssist = (buttonKey: string, event: string) => {
+      if (exemptTreeType?.checked) return;
       const now = Date.now();
       const last = lastTrackedAt.get(buttonKey) ?? 0;
       if (trackedAssistButtons.has(buttonKey) || now - last < trackThrottleMs) return;
 
       lastTrackedAt.set(buttonKey, now);
+      trackedAssistButtons.add(buttonKey);
 
-      const goatcounter = (
-        window as Window & {
-          goatcounter?: {
-            count?: (args: { path: string; title: string; event: true }) => void;
-          };
-        }
-      ).goatcounter;
-
-      if (!goatcounter?.count) return;
-
-      try {
-        goatcounter.count({ path, title, event: true });
-        trackedAssistButtons.add(buttonKey);
-      } catch {
-        // Ignore tracking failures so user workflows are never blocked.
-      }
+      // Record to the server-verified counter (Netlify Function + Blobs).
+      recordServerAssist(event);
     };
 
     const fieldValue = (name: string) => {
@@ -380,6 +508,28 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
     const encodeMailtoValue = (value: string) => encodeURIComponent(value);
 
     const buildEmail = () => {
+      const blocked = exemptTreeType?.checked ?? false;
+      if (exemptionGuidance) exemptionGuidance.hidden = !blocked;
+      emailWorkflow.forEach((element) => {
+        element.hidden = blocked;
+        if (element instanceof HTMLFieldSetElement) element.disabled = blocked;
+      });
+      [copyToButton, copySubjectButton, copyButton].forEach((button) => {
+        if (button) button.disabled = blocked;
+      });
+      if (openEmail) {
+        if (blocked) {
+          openEmail.removeAttribute('href');
+          openEmail.setAttribute('aria-disabled', 'true');
+        } else {
+          openEmail.removeAttribute('aria-disabled');
+        }
+      }
+      if (blocked) {
+        if (preview) preview.textContent = '';
+        if (copyStatus) copyStatus.textContent = '';
+        return null;
+      }
       const address = fieldValue('address') || '[insert full address]';
       const selectedMeasurements = checkedValues('measurement');
       const measurementDescriptions: Record<string, string> = {
@@ -451,15 +601,17 @@ ${contactLines}`.replace(/\n{3,}/g, '\n\n');
     };
 
     form?.addEventListener('input', buildEmail);
-    openEmail?.addEventListener('click', () => {
-      trackAssist(
-        'open-email',
-        'advocacy-protect-tree-open-email',
-        'Protect a tree: open draft in your email app',
-      );
+    openEmail?.addEventListener('click', (event) => {
+      if (!buildEmail()) {
+        event.preventDefault();
+        return;
+      }
+      trackAssist('open-email', 'advocacy-protect-tree-open-email');
     });
     copyToButton?.addEventListener('click', async () => {
-      const { cc } = buildEmail();
+      const draft = buildEmail();
+      if (!draft) return;
+      const { cc } = draft;
       try {
         await navigator.clipboard.writeText(`belmont@belmont.wa.gov.au${cc ? `\nCC: ${cc}` : ''}`);
         if (copyStatus) copyStatus.textContent = 'Email address copied.';
@@ -468,7 +620,9 @@ ${contactLines}`.replace(/\n{3,}/g, '\n\n');
       }
     });
     copySubjectButton?.addEventListener('click', async () => {
-      const { subject } = buildEmail();
+      const draft = buildEmail();
+      if (!draft) return;
+      const { subject } = draft;
       try {
         await navigator.clipboard.writeText(subject);
         if (copyStatus) copyStatus.textContent = 'Subject copied.';
@@ -477,15 +631,13 @@ ${contactLines}`.replace(/\n{3,}/g, '\n\n');
       }
     });
     copyButton?.addEventListener('click', async () => {
-      const { subject, body, cc } = buildEmail();
+      const draft = buildEmail();
+      if (!draft) return;
+      const { subject, body, cc } = draft;
       const headers = `To: belmont@belmont.wa.gov.au\n${cc ? `CC: ${cc}\n` : ''}Subject: ${subject}`;
       try {
         await navigator.clipboard.writeText(`${headers}\n\n${body}`);
-        trackAssist(
-          'copy-email',
-          'advocacy-protect-tree-copy-full-email',
-          'Protect a tree: copy full email',
-        );
+        trackAssist('copy-email', 'advocacy-protect-tree-copy-full-email');
         if (copyStatus) copyStatus.textContent = 'Email copied to clipboard.';
       } catch {
         if (copyStatus) copyStatus.textContent = 'Copy failed. Select and copy the email text above.';
@@ -493,5 +645,6 @@ ${contactLines}`.replace(/\n{3,}/g, '\n\n');
     });
 
     buildEmail();
+    loadAssistCount();
   </script>
 </BaseLayout>
