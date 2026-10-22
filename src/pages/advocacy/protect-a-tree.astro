@@ -26,23 +26,28 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
         Protect Our Tree Canopy
       </h1>
       <p class="mt-4 max-w-3xl text-base leading-relaxed text-ink sm:text-lg">
-        Under the City of Belmont’s Local Planning Policy No.21, many trees on private properties are protected helping the retention of healthy, established trees and securing much-needed canopy in our area. 
+        Under the City of Belmont’s Local Planning Policy No.21, many trees on private properties are protected, helping the retention of healthy, established trees and securing much-needed canopy in our area. 
 
       </p>
-      <p class="mt-4 max-w-3xl text-base leading-relaxed text-ink sm:text-lg">
+        <p class="mt-3 max-w-3xl text-base leading-relaxed text-ink sm:text-lg">
           But to help the City identify when a tree may be at risk, we need to act, and as early as possible. 
       </p>
-      <h2 class="mt-6 font-heading text-xl font-bold text-brand-dark">How?</h2>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-3xl px-4 pt-6 pb-10 sm:pt-8 sm:pb-12">
+    <section aria-labelledby="how-heading">
+      <h2 id="how-heading" class="font-heading text-xl font-bold text-brand-dark">How?</h2>
       <p class="mt-2 max-w-3xl text-base leading-relaxed text-ink">
         You can help by:
       </p>
-      <ul class="mt-4 max-w-3xl space-y-3">
+      <ul class="mt-3 max-w-3xl space-y-3">
         {[
           'Noticing properties with large trees in your neighbourhood',
           'Watching for recent property sales, with demolition or significant renovation likely',
           'Observing chainsaw or large heavy machinery being used on large trees',
         ].map((tip) => (
-          <li class="flex items-start gap-3 rounded-lg bg-surface p-4">
+          <li class="flex items-start gap-3">
             <svg
               class="mt-0.5 h-5 w-5 flex-shrink-0 text-brand"
               viewBox="0 0 20 20"
@@ -59,11 +64,8 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
           </li>
         ))}
       </ul>
-    </div>
-  </section>
-
-  <div class="mx-auto max-w-3xl px-4 pt-6 pb-10 sm:pt-8 sm:pb-12">
-      <section class="border-l-4 border-brand bg-brand-light/40 p-4 sm:p-6" aria-labelledby="speak-up-heading">
+    </section>
+      <section class="mt-8 border-l-4 border-brand bg-brand-light/40 p-4 sm:mt-10 sm:p-6" aria-labelledby="speak-up-heading">
         <h2 id="speak-up-heading" class="font-heading text-xl font-bold text-brand-dark">
           Say something (and straight away!)
         </h2>
@@ -74,41 +76,46 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
           and ask for the Planning Compliance team. We recommend then following up with an email (see below).
         </p>
       </section>
-      <section class="prose mt-8 max-w-none prose-headings:font-heading prose-headings:text-brand-dark prose-p:text-ink prose-a:text-brand sm:mt-10" aria-labelledby="protected-trees-heading">
-        <h2 id="protected-trees-heading" class="mt-0 text-xl">Which trees are protected?</h2>
-        <p>
+      <section class="prose mt-6 max-w-none prose-headings:font-heading prose-headings:text-brand-dark prose-p:text-ink prose-li:text-ink prose-a:text-brand" aria-labelledby="put-in-writing-heading">
+        <h2 id="put-in-writing-heading" class="mt-0 mb-2 text-xl font-bold">Put it in writing.</h2>
+        <p class="mt-0 mb-0">
+          If it’s not time critical, send the City an email (we’ve helped with a draft email template below).
+        </p>
+        <p class="mt-3 mb-0">Tips:</p>
+        <ul class="mt-3 mb-0 grid gap-3">
+          <li class="mt-0 mb-0">Answer what you can and leave anything you’re unsure about blank.</li>
+          <li class="mt-0 mb-0">When your draft is ready, review it, open it in your email app, add any photos, and press ‘send’.</li>
+        </ul>
+        <p class="not-prose mt-3 mb-0 text-sm italic leading-relaxed text-muted">
+          Your answers stay in your browser and aren’t saved by this website. BCEC only receives
+          them if you choose to copy us into the email and send it. 
+        </p>
+      </section>
+
+    <details class="mt-6 border-y border-brand-light py-2" aria-labelledby="protected-trees-heading">
+      <summary id="protected-trees-heading" class="min-h-11 cursor-pointer py-2 font-heading text-lg font-semibold text-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
+        Which trees are protected?
+      </summary>
+      <div class="prose max-w-none prose-p:text-ink prose-a:text-brand">
+        <p class="mt-3 mb-3">
           Local Planning Policy No. 21 starts from a presumption that trees will be retained.
           Unless an exemption applies, removing or damaging trees on private land requires development approval.
         </p>
-        <p>
+        <p class="mt-3 mb-0">
           Exemptions apply to small trees, palm trees, pencil pines and listed weed species.
           Unsure if a tree is protected or exempt? Our email template will guide you through the
           criteria, or{' '}
           <a href={policyUrl} target="_blank" rel="noopener noreferrer" class="underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">read the policy in full (PDF, opens in a new tab)</a>.
         </p>
-      </section>
-      <section class="prose mt-8 max-w-none prose-headings:font-heading prose-headings:text-brand-dark prose-p:text-ink prose-li:text-ink prose-a:text-brand sm:mt-10" aria-labelledby="put-in-writing-heading">
-        <h2 id="put-in-writing-heading" class="mt-0 text-xl">Put it in writing.</h2>
-        <p>
-          If it’s not time critical, send the City an email (we’ve helped with a draft email template below).
-        </p>
-        <p>Tips:</p>
-        <ul>
-          <li>Answer what you can and leave anything you’re unsure about blank.</li>
-          <li>When your draft is ready, review it, open it in your email app, add any photos, and press ‘send’.</li>
-        </ul>
-        <p class="not-prose text-sm italic leading-relaxed text-muted">
-          Your answers stay in your browser and aren’t saved by this website. BCEC only receives
-          them if you choose to copy us into the email and send it. 
-        </p>
-      </section>
+      </div>
+    </details>
 
     <section class="mt-8 sm:mt-10" aria-labelledby="email-builder-heading">
       <h2 id="email-builder-heading" class="font-heading text-2xl font-bold text-brand-dark">
         Draft your email
       </h2>
 
-      <form id="tree-concern-form" class="mt-8 space-y-10">
+      <form id="tree-concern-form" class="mt-6 space-y-8 sm:space-y-10">
         
         <fieldset class="min-w-0">
           <legend class="font-heading text-lg font-bold text-brand-dark">
@@ -317,12 +324,12 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
       </form>
     </section>
 
-    <section class="mt-10 rounded-xl border border-brand-light bg-surface p-4 sm:mt-12 sm:p-6" aria-labelledby="preview-heading" data-email-workflow>
+    <section class="mt-8 rounded-xl border border-brand-light bg-surface p-4 sm:mt-10 sm:p-6" aria-labelledby="preview-heading" data-email-workflow>
       <div class="border-b border-brand-light pb-4">
         <h2 id="preview-heading" class="font-heading text-2xl font-bold text-brand-dark">
           Review your email
         </h2>
-        <div class="mt-2 space-y-2 text-sm leading-relaxed text-muted">
+        <div class="mt-2 space-y-3 text-sm leading-relaxed text-muted">
           <p>
             You can now open the drafted email in your email app using the button below, then attach
             your photos and send it.
@@ -404,7 +411,7 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
       </p>
     </section>
 
-    <section class="mt-10 border-t border-brand-light pt-10 sm:mt-12" aria-labelledby="keep-involved-heading">
+    <section class="mt-8 border-t border-brand-light pt-6 sm:mt-10" aria-labelledby="keep-involved-heading">
       <h2 id="keep-involved-heading" class="font-heading text-2xl font-bold text-brand-dark">
         More from BCEC
       </h2>
