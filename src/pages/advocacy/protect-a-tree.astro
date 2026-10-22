@@ -8,7 +8,7 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
 ---
 
 <BaseLayout
-  title="Protect a tree"
+  title="Protect Our Tree Canopy"
   description="Draft an email to the City of Belmont about a private tree at risk of removal or damage under Local Planning Policy No. 21."
   image="/site_assets/BCEC Logo (1200 x 630 px).png"
 >
@@ -23,18 +23,14 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
         </p>
       </div>
       <h1 class="mt-4 font-heading text-3xl font-bold text-brand-dark sm:text-4xl">
-        Protect a tree
+        Protect Our Tree Canopy
       </h1>
       <p class="mt-4 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">
-        You can help protect trees in Belmont, even if they aren’t on your property. If a tree
-        is at risk of removal or damage, speak up early.
+        Under the City of Belmont’s Local Planning Policy No.21, many trees on private properties are protected helping the retention of healthy, established trees and securing much-needed canopy in our area. 
+
       </p>
       <p class="mt-4 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">
-        The City of Belmont’s Local Planning Policy No. 21 helps protect larger trees on private
-        land. Unless an exemption applies, removing or damaging trees that meet its size thresholds
-        requires development approval. Reporting your concerns to the City’s Planning Compliance
-        team helps it investigate and take action if rules are being broken. You don’t need to
-        prove a breach.
+          But to help the City identify when a tree may be at risk, we need to act, and as early as possible. 
       </p>
       <a
         href={policyUrl}
@@ -68,27 +64,13 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
       </p>
 
       <form id="tree-concern-form" class="mt-8 space-y-10">
-        <fieldset class="min-w-0">
-          <legend class="font-heading text-lg font-bold text-brand-dark">Tree address</legend>
-          <label for="tree-address" class="mt-4 block text-sm font-semibold text-ink">
-            What is the address of the property?
-          </label>
-          <input
-            id="tree-address"
-            name="address"
-            type="text"
-            autocomplete="street-address"
-            placeholder="e.g. 10 Example St, Kewdale"
-            class="mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
-          />
-        </fieldset>
-
+        
         <fieldset class="min-w-0">
           <legend class="font-heading text-lg font-bold text-brand-dark">
             Tree size and type
           </legend>
           <p class="mt-2 text-sm leading-relaxed text-muted">
-            Select each measurement that appears to apply. Leave it blank if you are unsure.
+            Select each option that appears to apply.
           </p>
           <div class="mt-4 grid gap-3">
             {[
@@ -119,12 +101,12 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
           </div>
           <label class="mt-3 flex min-h-11 cursor-pointer gap-3 rounded-lg border border-gray-200 p-4 hover:border-brand-light">
             <input
-              id="exempt-tree-type"
-              type="checkbox"
-              name="exemptTreeType"
-              aria-describedby="exempt-tree-help"
-              aria-controls="exempt-tree-guidance"
-              class="mt-1 h-5 w-5 flex-none accent-brand"
+            id="exempt-tree-type"
+            type="checkbox"
+            name="exemptTreeType"
+            aria-describedby="exempt-tree-help"
+            aria-controls="exempt-tree-guidance"
+            class="mt-1 h-5 w-5 flex-none accent-brand"
             />
             <span>
               <span class="block text-sm font-semibold leading-relaxed text-ink">
@@ -138,19 +120,20 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
           <div aria-live="polite" aria-atomic="true">
             <div id="exempt-tree-guidance" hidden class="mt-4 rounded-xl border border-brand-light bg-brand-light/30 p-4 sm:p-6">
               <h3 class="font-heading text-lg font-bold text-brand-dark">Thanks for looking out for our local trees.</h3>
-              <p class="mt-2 text-sm leading-relaxed text-muted">
+              <p id="exempt-tree-type-guidance" class="mt-2 text-sm leading-relaxed text-muted">
                 Under the policy, palms, pencil pines and listed weed species are generally
-                exempt from needing approval for removal or damage, regardless of their size.
-                For these trees, this email template isn’t the right next step, so we’ve paused it here.
+                exempt from needing approval for removal or damage, regardless of their size. 
+                For these trees, this email template isn’t the right next step, so we’ve paused it here while this option is selected. If you’re unsure or
+                selected it by mistake, uncheck it to continue. Your answers will still be here.
+                A Tree Preservation Order may still provide protection. If you think this could be an option, contact the City for advice.
               </p>
-              <p class="mt-3 text-sm leading-relaxed text-muted">
-                A Tree Preservation Order may still provide protection. If you know one applies,
-                or you’re unsure about the tree’s type or protection, check with the City on{' '}
-                <a href="tel:0894777222" class="font-semibold text-brand-dark underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">(08) 9477 7222</a>{' '}
-                before proceeding.
+              <p id="tree-size-guidance" hidden class="mt-2 text-sm leading-relaxed text-muted">
+                You haven’t selected a tree size option. Trees smaller than all three size thresholds are
+                generally exempt from needing approval for removal or damage. If a measurement option above does appear to apply for this tree, please select it before continuing.
+                
               </p>
-              <p class="mt-3 text-sm leading-relaxed text-muted">
-                Selected this by mistake? Uncheck the option above to continue. Your answers will still be here.
+              <p id="template-continuation-guidance" class="mt-3 text-sm leading-relaxed text-muted">
+                If you’re unsure about the tree’s size, you can still continue with the template.
               </p>
               <p class="mt-3 text-sm leading-relaxed text-muted">
                 Check the size and species exemptions in clauses 5.1.1(a)–(b) of{' '}
@@ -160,6 +143,20 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
               </p>
             </div>
           </div>
+        </fieldset>
+        <fieldset class="min-w-0">
+          <legend class="font-heading text-lg font-bold text-brand-dark">Tree address</legend>
+          <label for="tree-address" class="mt-4 block text-sm font-semibold text-ink">
+            What is the address of the property?
+          </label>
+          <input
+            id="tree-address"
+            name="address"
+            type="text"
+            autocomplete="street-address"
+            placeholder="e.g. 10 Example St, Kewdale"
+            class="mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+          />
         </fieldset>
 
         <fieldset class="min-w-0" data-email-workflow>
@@ -411,7 +408,12 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
     const form = document.querySelector<HTMLFormElement>('#tree-concern-form');
     const exemptTreeType = document.querySelector<HTMLInputElement>('#exempt-tree-type');
     const exemptionGuidance = document.querySelector<HTMLElement>('#exempt-tree-guidance');
+    const exemptTypeGuidance = document.querySelector<HTMLElement>('#exempt-tree-type-guidance');
+    const sizeGuidance = document.querySelector<HTMLElement>('#tree-size-guidance');
+    const continuationGuidance = document.querySelector<HTMLElement>('#template-continuation-guidance');
     const emailWorkflow = document.querySelectorAll<HTMLElement>('[data-email-workflow]');
+    const addressInput = document.querySelector<HTMLInputElement>('#tree-address');
+    let addressAttempted = false;
     const preview = document.querySelector<HTMLElement>('#email-preview');
     const subjectElement = document.querySelector<HTMLElement>('#email-subject');
     const ccElement = document.querySelector<HTMLElement>('#email-cc');
@@ -470,7 +472,6 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
     };
 
     const trackAssist = (buttonKey: string, event: string) => {
-      if (exemptTreeType?.checked) return;
       const now = Date.now();
       const last = lastTrackedAt.get(buttonKey) ?? 0;
       if (trackedAssistButtons.has(buttonKey) || now - last < trackThrottleMs) return;
@@ -508,30 +509,34 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
     const encodeMailtoValue = (value: string) => encodeURIComponent(value);
 
     const buildEmail = () => {
-      const blocked = exemptTreeType?.checked ?? false;
-      if (exemptionGuidance) exemptionGuidance.hidden = !blocked;
+      const selectedMeasurements = checkedValues('measurement');
+      const exempt = exemptTreeType?.checked ?? false;
+      const missingSize = (addressAttempted || fieldValue('address') !== '') && selectedMeasurements.length === 0;
+      if (exemptionGuidance) exemptionGuidance.hidden = !(exempt || missingSize);
+      if (exemptTypeGuidance) exemptTypeGuidance.hidden = !exempt;
+      if (sizeGuidance) sizeGuidance.hidden = exempt || !missingSize;
+      if (continuationGuidance) continuationGuidance.hidden = exempt;
       emailWorkflow.forEach((element) => {
-        element.hidden = blocked;
-        if (element instanceof HTMLFieldSetElement) element.disabled = blocked;
+        element.hidden = exempt;
+        if (element instanceof HTMLFieldSetElement) element.disabled = exempt;
       });
       [copyToButton, copySubjectButton, copyButton].forEach((button) => {
-        if (button) button.disabled = blocked;
+        if (button) button.disabled = exempt;
       });
       if (openEmail) {
-        if (blocked) {
+        if (exempt) {
           openEmail.removeAttribute('href');
           openEmail.setAttribute('aria-disabled', 'true');
         } else {
           openEmail.removeAttribute('aria-disabled');
         }
       }
-      if (blocked) {
+      if (exempt) {
         if (preview) preview.textContent = '';
         if (copyStatus) copyStatus.textContent = '';
         return null;
       }
       const address = fieldValue('address') || '[insert full address]';
-      const selectedMeasurements = checkedValues('measurement');
       const measurementDescriptions: Record<string, string> = {
         height: 'a height of approximately 8 metres or more',
         canopy: 'an average canopy width of approximately 6 metres or more',
@@ -600,6 +605,10 @@ ${contactLines}`.replace(/\n{3,}/g, '\n\n');
       return { subject, body, cc };
     };
 
+    addressInput?.addEventListener('focus', () => {
+      addressAttempted = true;
+      buildEmail();
+    });
     form?.addEventListener('input', buildEmail);
     openEmail?.addEventListener('click', (event) => {
       if (!buildEmail()) {
