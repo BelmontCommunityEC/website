@@ -233,7 +233,7 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
               <span>The tree appears to have been marked for removal.</span>
             </label>
             <p id="urgent-suggestion" class="rounded-lg border-l-4 border-brand bg-brand-light/40 p-4 text-sm leading-relaxed text-ink sm:col-span-2" hidden aria-live="polite">
-              Your answers suggest this concern may be urgent. If removal or damaging work is underway or appears imminent, call the City right now on{' '}
+              Your answers indicate this concern is urgent, so we’ve added “URGENT” to the subject and copied planning@belmont.wa.gov.au into the email. If removal or damaging work is underway or appears imminent, call the City right now on{' '}
               <a href="tel:0894777222" class="font-semibold text-brand-dark underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">(08) 9477 7222</a>{' '}
               and ask for the Planning Compliance team. Then follow up with the email drafted below.
             </p>
@@ -270,7 +270,7 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
             Describe what you observed or add other details
           </label>
           <textarea id="risk-other" name="riskOther" rows="3" class="mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"></textarea>
-          <label class="mt-4 flex cursor-pointer gap-3 rounded-lg border border-brand-light bg-brand-light/30 p-4">
+          <label id="urgent-option" class="mt-4 flex cursor-pointer gap-3 rounded-lg border border-brand-light bg-brand-light/30 p-4">
             <input type="checkbox" name="urgent" class="mt-1 h-5 w-5 flex-none accent-brand" />
             <span>
               <strong class="block text-brand-dark">The concern is urgent</strong>
@@ -455,7 +455,8 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
       @apply flex min-h-11 items-center rounded-lg border border-brand-light bg-white p-4 text-sm font-semibold leading-relaxed text-brand-dark transition hover:border-brand hover:bg-brand-light/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand;
     }
 
-    [data-email-workflow][hidden] {
+    [data-email-workflow][hidden],
+    #urgent-option[hidden] {
       display: none;
     }
   </style>
@@ -479,6 +480,7 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
     const copyButton = document.querySelector<HTMLButtonElement>('#copy-email');
     const copyStatus = document.querySelector<HTMLElement>('#copy-status');
     const urgentSuggestion = document.querySelector<HTMLElement>('#urgent-suggestion');
+    const urgentOption = document.querySelector<HTMLElement>('#urgent-option');
     const trackedAssistButtons = new Set<string>();
     const lastTrackedAt = new Map<string, number>();
     const trackThrottleMs = 1500;
@@ -606,9 +608,9 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
       const senderName = fieldValue('senderName') || '[insert your name]';
       const senderEmail = fieldValue('senderEmail');
       const senderPhone = fieldValue('senderPhone');
-      const urgent = form?.querySelector<HTMLInputElement>('input[name="urgent"]')?.checked ?? false;
+      const automaticallyUrgent = Boolean(form?.querySelector<HTMLInputElement>('input[data-suggest-urgent]:checked'));
+      const urgent = automaticallyUrgent || (form?.querySelector<HTMLInputElement>('input[name="urgent"]')?.checked ?? false);
       const copyBcec = form?.querySelector<HTMLInputElement>('input[name="copyBcec"]:checked');
-      const urgencySuggested = form?.querySelector<HTMLInputElement>('input[data-suggest-urgent]:checked') !== null;
 
       if (riskOther) riskReasons.push(riskOther);
 
@@ -651,7 +653,8 @@ ${contactLines}`.replace(/\n{3,}/g, '\n\n');
       if (preview) preview.textContent = body;
       if (subjectElement) subjectElement.textContent = subject;
       if (ccElement) ccElement.textContent = cc || 'Not selected';
-      if (urgentSuggestion) urgentSuggestion.hidden = !urgencySuggested;
+      if (urgentSuggestion) urgentSuggestion.hidden = !automaticallyUrgent;
+      if (urgentOption) urgentOption.hidden = automaticallyUrgent;
       if (openEmail) {
         const params = [`subject=${encodeMailtoValue(subject)}`, `body=${encodeMailtoValue(body)}`];
         if (cc) params.push(`cc=${encodeMailtoValue(cc)}`);
