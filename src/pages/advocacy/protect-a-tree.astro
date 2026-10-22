@@ -32,36 +32,81 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
       <p class="mt-4 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">
           But to help the City identify when a tree may be at risk, we need to act, and as early as possible. 
       </p>
-      <a
-        href={policyUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-brand-dark underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-      >
-        Read the City’s Local Planning Policy No. 21 (PDF, opens in a new tab)
-      </a>
+      <h2 class="mt-6 font-heading text-xl font-bold text-brand-dark">How?</h2>
+      <p class="mt-2 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">
+        You can help by:
+      </p>
+      <ul class="mt-4 max-w-3xl space-y-3">
+        {[
+          'Noticing properties with large trees in your neighbourhood',
+          'Watching for recent property sales, with demolition or significant renovation likely',
+          'Observing chainsaw or large heavy machinery being used on large trees',
+        ].map((tip) => (
+          <li class="flex items-start gap-3 rounded-lg bg-surface p-4">
+            <svg
+              class="mt-0.5 h-5 w-5 flex-shrink-0 text-brand"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span class="min-w-0 text-base leading-relaxed text-muted sm:text-lg">{tip}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
   <div class="mx-auto max-w-5xl px-4 pt-6 pb-10 sm:px-6 sm:pt-8 sm:pb-12">
-    <p class="rounded-lg border-l-4 border-brand bg-brand-light/40 p-4 text-sm leading-relaxed text-ink mb-6">
-      If removal or damaging work is underway or appears imminent, call the City right now on{' '}
-      <a href="tel:0894777222" class="font-semibold text-brand-dark underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">(08) 9477 7222</a>{' '}
-      and ask for the Planning Compliance team. Then follow up with an email using the template below.
-    </p>
-    <section aria-labelledby="email-builder-heading">
+      <section class="border-l-4 border-brand bg-brand-light/40 p-4 sm:p-6" aria-labelledby="speak-up-heading">
+        <h2 id="speak-up-heading" class="font-heading text-xl font-bold text-brand-dark">
+          Say something (and straight away!)
+        </h2>
+        <p class="mt-2 max-w-3xl text-base leading-relaxed text-muted sm:text-lg">
+          If removal or damaging work is underway or appears imminent:
+          call the City of Belmont right now on{' '}
+          <a href="tel:0894777222" class="font-semibold text-brand-dark underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">(08) 9477 7222</a>{' '}
+          and ask for the Planning Compliance team. We recommend then following up with an email (see below).
+        </p>
+      </section>
+      <section class="mt-8 max-w-3xl sm:mt-10" aria-labelledby="protected-trees-heading">
+        <h2 id="protected-trees-heading" class="font-heading text-xl font-bold text-brand-dark">Which trees are protected?</h2>
+        <p class="mt-2 text-base leading-relaxed text-muted sm:text-lg">
+          Local Planning Policy No. 21 starts from a presumption that trees will be retained.
+          Unless an exemption applies, removing or damaging trees on private land requires development approval.
+        </p>
+        <p class="mt-3 text-base leading-relaxed text-muted sm:text-lg">
+          Exemptions apply to small trees, palm trees, pencil pines and listed weed species.
+          Unsure if a tree is protected or exempt? Our email template will guide you through the
+          criteria, or{' '}
+          <a href={policyUrl} target="_blank" rel="noopener noreferrer" class="font-semibold text-brand-dark underline underline-offset-2 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">read the policy in full (PDF, opens in a new tab)</a>.
+        </p>
+      </section>
+      <section class="mt-8 max-w-3xl sm:mt-10" aria-labelledby="put-in-writing-heading">
+        <h2 id="put-in-writing-heading" class="font-heading text-xl font-bold text-brand-dark">Put it in writing.</h2>
+        <p class="mt-2 text-base leading-relaxed text-muted sm:text-lg">
+          If it’s not time critical, send the City an email (we’ve helped with a draft email template below).
+        </p>
+        <p class="mt-3 text-base leading-relaxed text-muted sm:text-lg">Tips:</p>
+        <ul class="mt-2 list-disc space-y-2 pl-6 text-base leading-relaxed text-muted sm:text-lg">
+          <li>Answer what you can and leave anything you’re unsure about blank.</li>
+          <li>When your draft is ready, review it, open it in your email app, add any photos, and press ‘send’.</li>
+        </ul>
+        <p class="mt-3 text-sm italic leading-relaxed text-muted sm:text-base">
+          Your answers stay in your browser and aren’t saved by this website. BCEC only receives
+          them if you choose to copy us into the email and send it. 
+        </p>
+      </section>
+
+    <section class="mt-8 sm:mt-10" aria-labelledby="email-builder-heading">
       <h2 id="email-builder-heading" class="font-heading text-2xl font-bold text-brand-dark">
         Draft your email
       </h2>
-      <p class="mt-3 max-w-3xl text-sm leading-relaxed text-muted sm:text-base">
-        Answer what you can and leave anything you’re unsure about blank. When your draft is
-        ready, review it, open it in your email app, add any photos, and send it yourself.
-      </p>
-      <p class="mt-2 max-w-3xl text-sm leading-relaxed text-muted sm:text-base">
-        Your answers stay in your browser and aren’t saved by this website. BCEC only receives
-        them if you choose to copy us into the email and send it. We count how often people
-        open or copy a draft, but don’t collect your answers as part of that count.
-      </p>
 
       <form id="tree-concern-form" class="mt-8 space-y-10">
         
@@ -133,7 +178,7 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
                 
               </p>
               <p id="template-continuation-guidance" class="mt-3 text-sm leading-relaxed text-muted">
-                If you’re unsure about the tree’s size, you can still continue with the template.
+                If you’re still unsure about the tree’s size, you can still continue with the template.
               </p>
               <p class="mt-3 text-sm leading-relaxed text-muted">
                 Check the size and species exemptions in clauses 5.1.1(a)–(b) of{' '}
