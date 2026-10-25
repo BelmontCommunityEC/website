@@ -1,0 +1,51 @@
+---
+interface Props {
+  current: 'metrics' | 'event';
+}
+
+const { current } = Astro.props;
+
+const links = [
+  { key: 'metrics', href: '/admin/metrics/', label: 'Site metrics' },
+  { key: 'event', href: '/admin/drafts/event/', label: 'Draft an event' },
+];
+---
+
+<nav class="border-b border-brand-light bg-surface" aria-label="Admin">
+  <div class="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-2 px-4 py-2">
+    <ul class="flex flex-1 flex-wrap gap-2">
+      {links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            aria-current={link.key === current ? 'page' : undefined}
+            class="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-brand-dark transition hover:bg-brand-light/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand aria-[current=page]:bg-brand aria-[current=page]:text-white"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <button
+      type="button"
+      data-admin-sign-out
+      class="inline-flex min-h-11 items-center rounded-lg border border-brand-light bg-white px-3 text-sm font-semibold text-brand-dark transition hover:border-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+    >
+      Sign out
+    </button>
+  </div>
+</nav>
+
+<script>
+  import { logout } from '@netlify/identity';
+
+  document.querySelectorAll<HTMLButtonElement>('[data-admin-sign-out]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      try {
+        await logout();
+      } finally {
+        location.replace('/admin/login/');
+      }
+    });
+  });
+</script>
