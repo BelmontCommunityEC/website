@@ -168,19 +168,8 @@ const tagSuggestions = ['facebook', 'instagram', 'newsletter', 'email', 'flyer-q
         </section>
       </div>
 
-      <section class="metrics-card" aria-labelledby="downloads-heading">
-        <h2 id="downloads-heading" class="metrics-heading">Download for reports</h2>
-        <p class="mt-1 text-sm text-muted">Spreadsheet files (CSV) for the selected date range.</p>
-        <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          <button id="download-daily" type="button" class="metrics-secondary">Daily totals</button>
-          <button id="download-pages" type="button" class="metrics-secondary">Pages</button>
-          <button id="download-sources" type="button" class="metrics-secondary">Traffic sources</button>
-          <button id="download-links" type="button" class="metrics-secondary">Key link clicks</button>
-          <button id="download-campaigns" type="button" class="metrics-secondary">Campaign tags</button>
-        </div>
-      </section>
     </div>
-
+    
     <section id="link-builder" class="metrics-card mt-8 scroll-mt-24 sm:mt-10" aria-labelledby="link-builder-heading">
       <h2 id="link-builder-heading" class="metrics-heading">Make a trackable link</h2>
       <p class="mt-1 text-sm leading-relaxed text-muted">
@@ -215,7 +204,18 @@ const tagSuggestions = ['facebook', 'instagram', 'newsletter', 'email', 'flyer-q
       <button id="copy-tracked-link" type="button" class="metrics-secondary mt-3 sm:w-auto" disabled>Copy link</button>
       <p id="link-builder-status" class="mt-2 min-h-5 text-sm font-semibold text-brand" role="status" aria-live="polite"></p>
     </section>
-
+    <section class="metrics-card" aria-labelledby="downloads-heading">
+      <h2 id="downloads-heading" class="metrics-heading">Download for reports</h2>
+      <p class="mt-1 text-sm text-muted">Spreadsheet files (CSV) for the selected date range.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <button id="download-daily" type="button" class="metrics-secondary">Daily totals</button>
+        <button id="download-pages" type="button" class="metrics-secondary">Pages</button>
+        <button id="download-sources" type="button" class="metrics-secondary">Traffic sources</button>
+        <button id="download-links" type="button" class="metrics-secondary">Key link clicks</button>
+        <button id="download-campaigns" type="button" class="metrics-secondary">Campaign tags</button>
+      </div>
+    </section>
+    
     <section class="metrics-card mt-8 sm:mt-10" aria-labelledby="guide-heading">
       <h2 id="guide-heading" class="metrics-heading">Using these metrics</h2>
       <div class="mt-3 space-y-4 text-sm leading-relaxed text-ink">
