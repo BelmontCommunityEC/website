@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, socials } from '../config';
+---
+
+<BaseLayout
+  title="Privacy"
+  description={`How ${site.shortName} measures website use without cookies or storing IP addresses.`}
+>
+  <section class="bg-brand-light/50">
+    <div class="mx-auto max-w-3xl px-4 py-6 sm:py-8">
+      <h1 class="font-heading text-3xl font-bold text-brand-dark sm:text-4xl">Privacy</h1>
+      <p class="mt-4 text-base leading-relaxed text-ink sm:text-lg">
+        We count how our website is used so we can see what’s helpful to the community and report on our work.
+        We keep it simple, private and as anonymous as we can.
+      </p>
+    </div>
+  </section>
+
+  <div class="prose mx-auto max-w-3xl px-4 pt-6 pb-10 prose-headings:font-heading prose-headings:text-brand-dark prose-p:text-ink prose-li:text-ink prose-a:text-brand sm:pt-8 sm:pb-12">
+    <h2>What we count</h2>
+    <ul>
+      <li>Which pages are viewed, and on which day.</li>
+      <li>The website that sent you here, reduced to its name (for example, facebook.com), or a campaign tag in the link you followed.</li>
+      <li>Clicks on key links, such as our membership form, social media pages and documents.</li>
+      <li>When the Protect a tree email builder is started, opened in an email app, or copied.</li>
+    </ul>
+
+    <h2>Unique visitors</h2>
+    <p>
+      To estimate how many different people visit each day, our server briefly combines your IP address and browser
+      type into a temporary code. We don’t store your IP address. The code, and the secret used to create it, change
+      every day and are deleted afterwards, so visits on different days can’t be linked. Our public “Protect a tree
+      assists” tally uses the same kind of daily code to avoid counting repeat clicks.
+    </p>
+
+    <h2>What we don’t collect</h2>
+    <ul>
+      <li>We don’t use cookies or advertising trackers to measure visits.</li>
+      <li>
+        We don’t receive the answers you enter in our email builder, including tree addresses, names, contact details
+        or email text. Your draft is created in your browser. We only see your email if you choose to copy us into it.
+      </li>
+    </ul>
+
+    <h2>Who can see it and for how long</h2>
+    <p>
+      Only committee members with an approved login can view the figures, which are daily totals rather than records
+      about individuals. We keep daily totals for about 13 months.
+    </p>
+
+    <h2>Choosing not to be counted</h2>
+    <p>
+      If your browser sends a Global Privacy Control or “Do Not Track” signal, we don’t count your visit.
+    </p>
+
+    <h2>Services we use</h2>
+    <p>
+      Our website is hosted by Netlify, which processes standard technical information, such as IP addresses, to
+      deliver and secure the site. Our font is loaded from Google Fonts, which also receives your IP address when the
+      page loads.
+    </p>
+
+    {socials.email && (
+      <>
+        <h2>Questions</h2>
+        <p>
+          Email us at <a href={`mailto:${socials.email}`}>{socials.email}</a>.
+        </p>
+      </>
+    )}
+  </div>
+</BaseLayout>

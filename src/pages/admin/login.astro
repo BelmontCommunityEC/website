@@ -1,0 +1,336 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Committee sign in" description="Sign in to view BCEC site metrics." noindex>
+  <section class="mx-auto w-full max-w-md px-4 py-8 sm:py-12" aria-labelledby="admin-login-heading">
+    <p class="inline-flex rounded-full bg-brand-dark px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+      Committee only
+    </p>
+    <h1 id="admin-login-heading" class="mt-4 font-heading text-3xl font-bold text-brand-dark">Sign in</h1>
+    <p class="mt-2 text-base leading-relaxed text-muted">
+      Access to site metrics is by invitation. Use the email address your invitation was sent to.
+    </p>
+
+    <p id="auth-status" class="mt-6 min-h-6 text-sm font-semibold leading-relaxed text-brand-dark" role="status" aria-live="polite">
+      Checking your session…
+    </p>
+
+    <form id="login-form" class="auth-panel mt-4 space-y-4" hidden novalidate>
+      <label class="block text-sm font-semibold text-ink">
+        Email
+        <input name="email" type="email" autocomplete="username" required class="auth-input" />
+      </label>
+      <label class="block text-sm font-semibold text-ink">
+        Password
+        <input name="password" type="password" autocomplete="current-password" required class="auth-input" />
+      </label>
+      <button type="submit" class="auth-primary">Sign in</button>
+      <button type="button" data-show="recovery-form" class="auth-secondary">Forgot your password?</button>
+      <div id="oauth-options" class="border-t border-brand-light pt-4" hidden>
+        <button id="google-login" type="button" class="auth-secondary">Continue with Google</button>
+      </div>
+    </form>
+
+    <form id="recovery-form" class="auth-panel mt-4 space-y-4" hidden novalidate>
+      <p class="text-sm leading-relaxed text-muted">
+        Enter your email and we’ll send a link to set a new password.
+      </p>
+      <label class="block text-sm font-semibold text-ink">
+        Email
+        <input name="email" type="email" autocomplete="username" required class="auth-input" />
+      </label>
+      <button type="submit" class="auth-primary">Send reset link</button>
+      <button type="button" data-show="login-form" class="auth-secondary">Back to sign in</button>
+    </form>
+
+    <form id="password-form" class="auth-panel mt-4 space-y-4" hidden novalidate>
+      <h2 id="password-heading" class="font-heading text-xl font-bold text-brand-dark">Set your password</h2>
+      <label class="block text-sm font-semibold text-ink">
+        New password
+        <input name="password" type="password" autocomplete="new-password" minlength="10" required class="auth-input" aria-describedby="password-help" />
+      </label>
+      <p id="password-help" class="text-sm text-muted">At least 10 characters.</p>
+      <label class="block text-sm font-semibold text-ink">
+        Confirm password
+        <input name="confirm" type="password" autocomplete="new-password" minlength="10" required class="auth-input" />
+      </label>
+      <button type="submit" class="auth-primary">Save password</button>
+    </form>
+
+    <div id="no-access" class="auth-panel mt-4 space-y-4" hidden>
+      <p class="text-base leading-relaxed text-ink">
+        You’re signed in as <strong id="no-access-email" class="wrap-anywhere"></strong>, but this account
+        hasn’t been given access to site metrics yet. Ask a site administrator to add the
+        <code>admin</code> role, then sign in again.
+      </p>
+      <button type="button" data-sign-out class="auth-secondary">Sign out</button>
+    </div>
+  </section>
+
+  <style>
+    @reference '../../styles/global.css';
+
+    .auth-panel {
+      @apply rounded-xl border border-brand-light bg-surface p-4 sm:p-6;
+    }
+
+    .auth-input {
+      @apply mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-base font-normal text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20;
+    }
+
+    .auth-primary {
+      @apply inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:cursor-wait disabled:opacity-70;
+    }
+
+    .auth-secondary {
+      @apply inline-flex min-h-11 w-full items-center justify-center rounded-lg border border-brand-light bg-white px-4 py-3 text-sm font-semibold text-brand-dark transition hover:border-brand hover:bg-brand-light/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand;
+    }
+
+    .auth-panel[hidden],
+    #oauth-options[hidden] {
+      display: none;
+    }
+  </style>
+
+  <script>
+    import {
+      AuthError,
+      MissingIdentityError,
+      acceptInvite,
+      getSettings,
+      getUser,
+      handleAuthCallback,
+      login,
+      logout,
+      oauthLogin,
+      refreshSession,
+      requestPasswordRecovery,
+      updateUser,
+      type User,
+    } from '@netlify/identity';
+
+    const DASHBOARD_URL = '/admin/metrics/';
+    const ADMIN_ROLE = 'admin';
+    const REDIRECT_GUARD_KEY = 'bcec-admin-auto-redirect';
+    const REDIRECT_GUARD_MS = 15_000;
+
+    const status = document.querySelector<HTMLElement>('#auth-status');
+    const loginForm = document.querySelector<HTMLFormElement>('#login-form');
+    const recoveryForm = document.querySelector<HTMLFormElement>('#recovery-form');
+    const passwordForm = document.querySelector<HTMLFormElement>('#password-form');
+    const passwordHeading = document.querySelector<HTMLElement>('#password-heading');
+    const noAccess = document.querySelector<HTMLElement>('#no-access');
+    const noAccessEmail = document.querySelector<HTMLElement>('#no-access-email');
+    const oauthOptions = document.querySelector<HTMLElement>('#oauth-options');
+    const panels = [loginForm, recoveryForm, passwordForm, noAccess];
+
+    let inviteToken: string | null = null;
+
+    const setStatus = (message: string) => {
+      if (status) status.textContent = message;
+    };
+
+    const show = (panel: HTMLElement | null) => {
+      panels.forEach((element) => {
+        if (element) element.hidden = element !== panel;
+      });
+    };
+
+    const field = (form: HTMLFormElement | null, name: string) =>
+      (form?.elements.namedItem(name) as HTMLInputElement | null)?.value.trim() ?? '';
+
+    const errorMessage = (error: unknown, fallback: string) => {
+      if (error instanceof MissingIdentityError) {
+        return 'Sign-in isn’t available here yet. Netlify Identity needs to be enabled for this site.';
+      }
+      if (error instanceof AuthError && (error.status === 400 || error.status === 401 || error.status === 422)) {
+        return fallback;
+      }
+      return 'Something went wrong. Check your connection and try again.';
+    };
+
+    const withBusy = async (form: HTMLFormElement | null, task: () => Promise<void>) => {
+      const button = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (button) button.disabled = true;
+      try {
+        await task();
+      } finally {
+        if (button) button.disabled = false;
+      }
+    };
+
+    // If the dashboard bounced us straight back here, the CDN didn't accept the
+    // session (expired token or removed role), so don't redirect again.
+    const recentlyAutoRedirected = () => {
+      try {
+        return Date.now() - Number(sessionStorage.getItem(REDIRECT_GUARD_KEY) ?? 0) < REDIRECT_GUARD_MS;
+      } catch {
+        return false;
+      }
+    };
+
+    const markAutoRedirect = (value: string | null) => {
+      try {
+        if (value === null) sessionStorage.removeItem(REDIRECT_GUARD_KEY);
+        else sessionStorage.setItem(REDIRECT_GUARD_KEY, value);
+      } catch {
+        // sessionStorage can be unavailable in private modes; the guard is best-effort.
+      }
+    };
+
+    const route = (user: User | null, automatic = false) => {
+      if (user?.roles?.includes(ADMIN_ROLE)) {
+        if (automatic && recentlyAutoRedirected()) {
+          markAutoRedirect(null);
+          void logout().catch(() => {});
+          setStatus('Your session has expired. Please sign in again.');
+          show(loginForm);
+          return;
+        }
+        markAutoRedirect(automatic ? String(Date.now()) : null);
+        setStatus('Signed in. Opening site metrics…');
+        location.replace(DASHBOARD_URL);
+        return;
+      }
+      if (user) {
+        if (noAccessEmail) noAccessEmail.textContent = user.email ?? 'this account';
+        setStatus('');
+        show(noAccess);
+        return;
+      }
+      setStatus('');
+      show(loginForm);
+    };
+
+    const showPasswordForm = (heading: string, message: string) => {
+      if (passwordHeading) passwordHeading.textContent = heading;
+      setStatus(message);
+      show(passwordForm);
+      passwordForm?.querySelector<HTMLInputElement>('input')?.focus();
+    };
+
+    document.querySelectorAll<HTMLButtonElement>('[data-show]').forEach((button) => {
+      button.addEventListener('click', () => {
+        setStatus('');
+        const panel = document.getElementById(button.dataset.show ?? '');
+        show(panel);
+        panel?.querySelector<HTMLInputElement>('input')?.focus();
+      });
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('[data-sign-out]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        try {
+          await logout();
+        } finally {
+          setStatus('You’ve been signed out.');
+          show(loginForm);
+        }
+      });
+    });
+
+    loginForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const email = field(loginForm, 'email');
+      const password = field(loginForm, 'password');
+      if (!email || !password) {
+        setStatus('Enter your email and password.');
+        return;
+      }
+      void withBusy(loginForm, async () => {
+        setStatus('Signing in…');
+        try {
+          route(await login(email, password));
+        } catch (error) {
+          setStatus(errorMessage(error, 'That email and password combination wasn’t recognised.'));
+        }
+      });
+    });
+
+    recoveryForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const email = field(recoveryForm, 'email');
+      if (!email) {
+        setStatus('Enter your email address.');
+        return;
+      }
+      void withBusy(recoveryForm, async () => {
+        try {
+          await requestPasswordRecovery(email);
+          setStatus('If that email has an account, a reset link is on its way.');
+        } catch (error) {
+          setStatus(errorMessage(error, 'If that email has an account, a reset link is on its way.'));
+        }
+      });
+    });
+
+    passwordForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const password = field(passwordForm, 'password');
+      const confirm = field(passwordForm, 'confirm');
+      if (password.length < 10) {
+        setStatus('Use at least 10 characters.');
+        return;
+      }
+      if (password !== confirm) {
+        setStatus('The passwords don’t match.');
+        return;
+      }
+      void withBusy(passwordForm, async () => {
+        setStatus('Saving your password…');
+        try {
+          if (inviteToken) {
+            route(await acceptInvite(inviteToken, password));
+          } else {
+            await updateUser({ password });
+            route(await getUser());
+          }
+        } catch (error) {
+          setStatus(errorMessage(error, 'That link may have expired. Ask for a new invitation or reset link.'));
+        }
+      });
+    });
+
+    document.querySelector('#google-login')?.addEventListener('click', () => {
+      try {
+        oauthLogin('google');
+      } catch (error) {
+        setStatus(errorMessage(error, 'Google sign-in isn’t available.'));
+      }
+    });
+
+    const init = async () => {
+      try {
+        const callback = await handleAuthCallback();
+        if (callback?.type === 'invite' && callback.token) {
+          inviteToken = callback.token;
+          showPasswordForm('Welcome! Set your password', 'Choose a password to finish accepting your invitation.');
+          return;
+        }
+        if (callback?.type === 'recovery') {
+          showPasswordForm('Set a new password', 'Choose a new password for your account.');
+          return;
+        }
+        if (callback) {
+          route(callback.user);
+          return;
+        }
+        await refreshSession().catch(() => null);
+        route(await getUser(), true);
+      } catch (error) {
+        setStatus(errorMessage(error, 'That link may have expired. Ask for a new invitation or reset link.'));
+        show(loginForm);
+      }
+
+      try {
+        const settings = await getSettings();
+        if (oauthOptions) oauthOptions.hidden = !settings.providers?.google;
+      } catch {
+        // Email sign-in still works without the optional provider list.
+      }
+    };
+
+    void init();
+  </script>
+</BaseLayout>
