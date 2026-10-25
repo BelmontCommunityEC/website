@@ -9,7 +9,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "node --test netlify/lib/site-metrics.test.mjs"
+    "test": "node --experimental-strip-types --test netlify/lib/site-metrics.test.mjs netlify/lib/drafts.test.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

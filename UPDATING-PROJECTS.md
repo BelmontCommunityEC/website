@@ -151,6 +151,11 @@ a new stat, copy an existing `- label:` block and edit it.
 
 ## Adding an event
 
+> **Easier option for new events:** committee admins can use the form at
+> `/admin/drafts/event/`, which creates the file and photos for you and sends
+> them for review. See [DRAFTING-GUIDE.md](./DRAFTING-GUIDE.md). The steps below
+> are still needed to edit an existing event.
+
 An event is a single dated activity. Every event gets its own page (e.g.
 `/events/garvey-park-green-up`) that **grows over its lifecycle**:
 

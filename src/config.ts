@@ -25,6 +25,7 @@ export const site = {
 
 /**
  * Google Form links. Paste the "share" links from your Google Forms here.
+ * Clicks are counted in site metrics as `<key>-form` (e.g. `membership-form`).
  */
 export const forms = {
   membership: 'https://forms.gle/Fn5hG5xGeUd7SrKv6',

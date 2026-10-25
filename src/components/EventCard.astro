@@ -10,9 +10,11 @@ interface Props {
   summary: string;
   registerUrl?: string;
   href?: string;
+  /** Event slug, used to name the Register link in site metrics. */
+  slug?: string;
 }
 
-const { title, categories, start, end, location, summary, registerUrl, href } = Astro.props;
+const { title, categories, start, end, location, summary, registerUrl, href, slug } = Astro.props;
 
 const dateFmt = new Intl.DateTimeFormat('en-AU', {
   weekday: 'short',
@@ -68,6 +70,7 @@ const timeLabel = end
     registerUrl && (
       <a
         href={registerUrl}
+        data-track-link={slug ? `event-register:${slug}` : 'event-register'}
         target="_blank"
         rel="noopener"
         class="inline-flex shrink-0 items-center justify-center rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-dark"

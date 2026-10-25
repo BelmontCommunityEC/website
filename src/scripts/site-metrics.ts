@@ -14,9 +14,11 @@ type Metric =
   | { type: 'link'; link: string }
   | { type: 'event'; name: string };
 
+// Every form in config.ts is named `<key>-form` (e.g. `membership-form`), so new
+// forms get readable names automatically.
 const knownLinks = new Map<string, string>(
   [
-    [forms.membership, 'membership-form'],
+    ...Object.entries(forms).map(([key, url]) => [url, `${key}-form`]),
     [socials.facebook, 'facebook'],
     [socials.instagram, 'instagram'],
   ].filter(([url]) => Boolean(url)) as [string, string][],
@@ -39,6 +41,8 @@ const isEnabled = () => {
   if (/^\/admin(\/|$)/.test(location.pathname)) return false;
   if (debugEnabled()) return true;
   if (optedOut() || navigator.webdriver) return false;
+  // Netlify deploy previews and branch deploys (e.g. deploy-preview-7--site.netlify.app) aren't real visits.
+  if (location.hostname.includes('--')) return false;
   return !['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
 };
 

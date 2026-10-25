@@ -6,9 +6,10 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# Private metrics dashboard: only Netlify Identity users with the `admin` role
-# are served the page; everyone else is sent to the sign-in page. The data
-# itself is protected separately by netlify/functions/site-metrics-admin.mjs.
+# Private admin area (metrics dashboard and content drafting): only Netlify
+# Identity users with the `admin` role are served these pages; everyone else is
+# sent to the sign-in page, which stays public. The data and drafting endpoints
+# check the role again in their functions.
 [[redirects]]
   from = "/admin"
   to = "/admin/metrics/"
@@ -16,27 +17,26 @@
   force = true
 
 [[redirects]]
-  from = "/admin/metrics"
-  to = "/admin/metrics/"
-  status = 200
-  force = true
-  conditions = { Role = ["admin"] }
-
-[[redirects]]
-  from = "/admin/metrics/*"
-  to = "/admin/metrics/:splat"
-  status = 200
-  force = true
-  conditions = { Role = ["admin"] }
-
-[[redirects]]
-  from = "/admin/metrics"
+  from = "/admin/login"
   to = "/admin/login/"
-  status = 302
+  status = 200
   force = true
 
 [[redirects]]
-  from = "/admin/metrics/*"
+  from = "/admin/login/*"
+  to = "/admin/login/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/:splat"
+  status = 200
+  force = true
+  conditions = { Role = ["admin"] }
+
+[[redirects]]
+  from = "/admin/*"
   to = "/admin/login/"
   status = 302
   force = true

@@ -1,5 +1,8 @@
 ---
+import { getCollection } from 'astro:content';
+import AdminNav from '../../components/AdminNav.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { nav } from '../../config';
 
 const ranges = [
   { days: 7, label: '7 days' },
@@ -7,19 +10,32 @@ const ranges = [
   { days: 90, label: '90 days' },
   { days: 365, label: '12 months' },
 ];
+
+// Pages offered in the trackable link builder.
+const events = (await getCollection('events', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.start.valueOf() - a.data.start.valueOf(),
+);
+const projects = await getCollection('projects', ({ data }) => !data.draft);
+const pageOptions = [
+  ...nav.map((item) => ({ path: item.href, label: item.label })),
+  { path: '/advocacy/protect-a-tree', label: 'Protect a tree' },
+  { path: '/submissions', label: 'Submissions' },
+  ...events.map((event) => ({ path: `/events/${event.id}`, label: `Event: ${event.data.title}` })),
+  ...projects.map((project) => ({ path: `/projects/${project.id}`, label: `Project: ${project.data.title}` })),
+].filter((option, index, all) => all.findIndex((other) => other.path === option.path) === index);
+
+const tagSuggestions = ['facebook', 'instagram', 'newsletter', 'email', 'flyer-qr', 'poster-qr', 'partner-city'];
 ---
 
 <BaseLayout title="Site metrics" description="Private BCEC site metrics." noindex>
+  <AdminNav current="metrics" />
   <section class="mx-auto w-full max-w-5xl px-4 py-6 sm:py-10" aria-labelledby="metrics-heading">
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-      <div class="min-w-0">
-        <p class="inline-flex rounded-full bg-brand-dark px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
-          Committee only
-        </p>
-        <h1 id="metrics-heading" class="mt-3 font-heading text-3xl font-bold text-brand-dark sm:text-4xl">Site metrics</h1>
-        <p id="signed-in-as" class="mt-1 text-sm text-muted wrap-anywhere"></p>
-      </div>
-      <button id="sign-out" type="button" class="metrics-secondary sm:w-auto">Sign out</button>
+    <div class="min-w-0">
+      <p class="inline-flex rounded-full bg-brand-dark px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+        Committee only
+      </p>
+      <h1 id="metrics-heading" class="mt-3 font-heading text-3xl font-bold text-brand-dark sm:text-4xl">Site metrics</h1>
+      <p id="signed-in-as" class="mt-1 text-sm text-muted wrap-anywhere"></p>
     </div>
 
     <div class="mt-6 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap" role="group" aria-label="Date range">
@@ -69,46 +85,165 @@ const ranges = [
             *Unique visitors are counted per day, so this column adds daily figures together. Someone who visits on
             three different days counts three times.
           </p>
+          <details class="metrics-help">
+            <summary>How this is measured</summary>
+            <div>
+              <p>A page view is counted each time a page loads, including refreshes and repeat visits.</p>
+              <p>
+                A unique visitor is one device on one network, per page, per day. People sharing Wi‑Fi can count as
+                one; one person switching from Wi‑Fi to mobile data can count as two.
+              </p>
+            </div>
+          </details>
         </section>
 
         <section class="metrics-card" aria-labelledby="sources-heading">
           <h2 id="sources-heading" class="metrics-heading">Traffic sources</h2>
           <p class="mt-1 text-sm text-muted">Where visits started. Moving between pages on this site isn’t counted here.</p>
           <div id="metrics-referrers" class="mt-3"></div>
+          <details class="metrics-help">
+            <summary>How this is measured</summary>
+            <div>
+              <p>
+                When someone arrives from another website, their browser tells us which site sent them. We keep only
+                the site’s name, such as <code>facebook.com</code>, never the full address or search words.
+              </p>
+              <p>
+                <strong>Direct or unknown</strong> means the browser didn’t say. That includes people who typed the
+                address or used a bookmark, and many apps that hide where visitors came from: the Facebook and
+                Instagram apps, Messenger, WhatsApp, email apps and QR codes.
+              </p>
+              <p>
+                To see those visits properly, share links with a campaign tag. Use the
+                <a href="#link-builder" class="font-semibold text-brand-dark underline underline-offset-2">trackable link builder</a>.
+              </p>
+            </div>
+          </details>
         </section>
 
         <section class="metrics-card" aria-labelledby="links-heading">
           <h2 id="links-heading" class="metrics-heading">Key link clicks</h2>
           <div id="metrics-links" class="mt-3"></div>
+          <details class="metrics-help">
+            <summary>How this is measured</summary>
+            <div>
+              <p>Each click on an important link is counted. Links are named like this:</p>
+              <ul class="list-disc space-y-1 pl-5">
+                <li><code>membership-form</code>: any form listed in the site settings is shown as its name plus <code>-form</code></li>
+                <li><code>event-register:</code> plus the event name: an event’s Register button</li>
+                <li><code>facebook</code>, <code>instagram</code>: BCEC’s social pages</li>
+                <li><code>email-bcec</code>: BCEC’s email address</li>
+                <li><code>tel:</code> plus a number: phone numbers</li>
+                <li>A path ending in <code>.pdf</code>: our documents</li>
+                <li>Anything else: the other website’s name and page</li>
+              </ul>
+              <p>
+                Links between our own pages aren’t counted here (see Top pages). A click shows interest; it doesn’t
+                confirm a form was submitted or a document was read.
+              </p>
+            </div>
+          </details>
         </section>
 
         <section class="metrics-card" aria-labelledby="campaigns-heading">
           <h2 id="campaigns-heading" class="metrics-heading">Campaign tags</h2>
           <p class="mt-1 text-sm text-muted">
-            Add <code>?utm_source=newsletter</code> (or similar) to links you share to see them here.
+            Visits that arrived through a tagged link, such as one made with the
+            <a href="#link-builder" class="font-semibold text-brand-dark underline underline-offset-2">trackable link builder</a>.
           </p>
           <div id="metrics-campaigns" class="mt-3"></div>
+          <details class="metrics-help">
+            <summary>How this is measured</summary>
+            <div>
+              <p>
+                If a visit starts from a link containing <code>?utm_source=</code>, the tag after it is counted once for
+                that visit. Tags are stored in lowercase. Other tags, such as <code>utm_campaign</code>, are ignored.
+              </p>
+              <p>
+                Tags work even when apps hide where a visit came from, so they’re the most reliable way to compare
+                Facebook posts, newsletters and flyers.
+              </p>
+            </div>
+          </details>
         </section>
       </div>
 
       <section class="metrics-card" aria-labelledby="downloads-heading">
         <h2 id="downloads-heading" class="metrics-heading">Download for reports</h2>
-        <div class="mt-4 grid gap-3 sm:grid-cols-2">
-          <button id="download-daily" type="button" class="metrics-secondary">Download daily CSV</button>
-          <button id="download-pages" type="button" class="metrics-secondary">Download pages CSV</button>
+        <p class="mt-1 text-sm text-muted">Spreadsheet files (CSV) for the selected date range.</p>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <button id="download-daily" type="button" class="metrics-secondary">Daily totals</button>
+          <button id="download-pages" type="button" class="metrics-secondary">Pages</button>
+          <button id="download-sources" type="button" class="metrics-secondary">Traffic sources</button>
+          <button id="download-links" type="button" class="metrics-secondary">Key link clicks</button>
+          <button id="download-campaigns" type="button" class="metrics-secondary">Campaign tags</button>
         </div>
       </section>
-
-      <section class="text-sm leading-relaxed text-muted" aria-labelledby="notes-heading">
-        <h2 id="notes-heading" class="font-heading text-base font-bold text-brand-dark">About these numbers</h2>
-        <ul class="mt-2 list-disc space-y-1 pl-5">
-          <li>Days follow Perth time. Today’s figures update as visits happen.</li>
-          <li>Unique visitors are estimated per day from a temporary code for each device and network. Shared Wi‑Fi can merge people; changing networks can split one person.</li>
-          <li>Visitors with ad blockers, JavaScript turned off, or “Do Not Track” / Global Privacy Control enabled aren’t counted. Known bots are excluded.</li>
-          <li>Daily totals are kept for about 13 months. Visitor codes are deleted after each day.</li>
-        </ul>
-      </section>
     </div>
+
+    <section id="link-builder" class="metrics-card mt-8 scroll-mt-24 sm:mt-10" aria-labelledby="link-builder-heading">
+      <h2 id="link-builder-heading" class="metrics-heading">Make a trackable link</h2>
+      <p class="mt-1 text-sm leading-relaxed text-muted">
+        Use this whenever you share the website in a post, newsletter, email or QR code. Visits from the link will
+        appear under Campaign tags.
+      </p>
+      <form id="link-builder-form" class="mt-4 grid gap-4 sm:grid-cols-2" novalidate>
+        <label class="block text-sm font-semibold text-ink">
+          Page
+          <select name="page" class="metrics-input">
+            {pageOptions.map((option) => <option value={option.path}>{option.label}</option>)}
+          </select>
+        </label>
+        <label class="block text-sm font-semibold text-ink">
+          Where you’ll share it
+          <input name="tag" type="text" list="tag-suggestions" autocomplete="off" placeholder="e.g. facebook" class="metrics-input" aria-describedby="tag-help" />
+          <datalist id="tag-suggestions">
+            {tagSuggestions.map((tag) => <option value={tag} />)}
+          </datalist>
+        </label>
+        <p id="tag-help" class="text-xs leading-relaxed text-muted sm:col-span-2">
+          Lowercase letters, numbers and hyphens, up to 40 characters. Spaces and capitals are tidied automatically.
+          Use a different tag for each flyer or poster, e.g. <code>flyer-garvey-park</code>.
+        </p>
+      </form>
+      <div class="mt-4 rounded-lg border border-brand-light bg-white p-3">
+        <p class="text-xs font-semibold uppercase tracking-wide text-muted">Your link</p>
+        <output id="tracked-link" for="link-builder-form" class="mt-1 block text-sm font-semibold text-ink wrap-anywhere">
+          Add where you’ll share it to make your link.
+        </output>
+      </div>
+      <button id="copy-tracked-link" type="button" class="metrics-secondary mt-3 sm:w-auto" disabled>Copy link</button>
+      <p id="link-builder-status" class="mt-2 min-h-5 text-sm font-semibold text-brand" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="metrics-card mt-8 sm:mt-10" aria-labelledby="guide-heading">
+      <h2 id="guide-heading" class="metrics-heading">Using these metrics</h2>
+      <div class="mt-3 space-y-4 text-sm leading-relaxed text-ink">
+        <div>
+          <h3 class="font-heading text-base font-bold text-brand-dark">Good habits</h3>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li><strong>Tag every link you share</strong> with the link builder above.</li>
+            <li>
+              <strong>Reuse the same tag names</strong>, e.g. <code>facebook</code>, <code>instagram</code>,
+              <code>newsletter</code>, <code>email</code>, and a separate <code>flyer-…</code> tag per flyer or poster.
+              Never put people’s names in tags.
+            </li>
+            <li><strong>Compare like with like</strong>: this month against last month, rather than single days.</li>
+            <li><strong>Download the CSVs</strong> for committee or grant reports.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-heading text-base font-bold text-brand-dark">About these numbers</h3>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>Days follow Perth time. Today’s figures update as visits happen; reload to refresh.</li>
+            <li>Unique visitors are estimated per day from a temporary code for each device and network. Daily figures can’t be added up into weekly or monthly unique visitors.</li>
+            <li>Visitors with ad blockers, JavaScript turned off, or “Do Not Track” / Global Privacy Control enabled aren’t counted. Known bots are excluded.</li>
+            <li>Builder opens and copies on this page start from when tracking began. The all-time assists are the official public tally.</li>
+            <li>Daily totals are kept for about 13 months. Visitor codes are deleted after each day.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
   </section>
 
   <style>
@@ -123,7 +258,23 @@ const ranges = [
     }
 
     .metrics-secondary {
-      @apply inline-flex min-h-11 w-full items-center justify-center rounded-lg border border-brand-light bg-white px-4 py-3 text-sm font-semibold text-brand-dark transition hover:border-brand hover:bg-brand-light/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand;
+      @apply inline-flex min-h-11 w-full items-center justify-center rounded-lg border border-brand-light bg-white px-4 py-3 text-sm font-semibold text-brand-dark transition hover:border-brand hover:bg-brand-light/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:opacity-60;
+    }
+
+    .metrics-input {
+      @apply mt-2 min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-base font-normal text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20;
+    }
+
+    .metrics-help {
+      @apply mt-4 border-t border-brand-light pt-2;
+    }
+
+    .metrics-help > summary {
+      @apply flex min-h-11 cursor-pointer items-center text-sm font-semibold text-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand;
+    }
+
+    .metrics-help > div {
+      @apply mt-1 space-y-2 text-sm leading-relaxed text-muted;
     }
 
     .range-button {
@@ -136,11 +287,15 @@ const ranges = [
   </style>
 
   <script>
-    import { getUser, logout, refreshSession } from '@netlify/identity';
+    import { getUser, refreshSession } from '@netlify/identity';
     import {
+      buildTrackedLink,
+      campaignsCsv,
       dailyCsv,
       downloadCsv,
       formatDate,
+      linksCsv,
+      normalizeTag,
       pagesCsv,
       renderAssists,
       renderChart,
@@ -148,6 +303,7 @@ const ranges = [
       renderFunnel,
       renderRankings,
       renderStats,
+      sourcesCsv,
       type MetricsReport,
     } from '../../scripts/metrics-dashboard';
 
@@ -272,12 +428,47 @@ const ranges = [
     byId('download-pages').addEventListener('click', () => {
       if (currentReport) downloadCsv(`bcec-site-metrics-pages-${currentReport.from}-to-${currentReport.to}.csv`, pagesCsv(currentReport));
     });
+    byId('download-sources').addEventListener('click', () => {
+      if (currentReport) downloadCsv(`bcec-site-metrics-sources-${currentReport.from}-to-${currentReport.to}.csv`, sourcesCsv(currentReport));
+    });
+    byId('download-links').addEventListener('click', () => {
+      if (currentReport) downloadCsv(`bcec-site-metrics-links-${currentReport.from}-to-${currentReport.to}.csv`, linksCsv(currentReport));
+    });
+    byId('download-campaigns').addEventListener('click', () => {
+      if (currentReport) downloadCsv(`bcec-site-metrics-campaigns-${currentReport.from}-to-${currentReport.to}.csv`, campaignsCsv(currentReport));
+    });
 
-    byId('sign-out').addEventListener('click', async () => {
+    const builderForm = byId('link-builder-form') as HTMLFormElement;
+    const trackedLink = byId('tracked-link');
+    const copyTrackedLink = byId('copy-tracked-link') as HTMLButtonElement;
+    const builderStatus = byId('link-builder-status');
+    let builtLink = '';
+
+    const updateTrackedLink = () => {
+      const page = (builderForm.elements.namedItem('page') as HTMLSelectElement).value;
+      const tagInput = builderForm.elements.namedItem('tag') as HTMLInputElement;
+      const tag = normalizeTag(tagInput.value);
+      builderStatus.textContent = '';
+      if (!tag) {
+        builtLink = '';
+        trackedLink.textContent = 'Add where you’ll share it to make your link.';
+        copyTrackedLink.disabled = true;
+        return;
+      }
+      builtLink = buildTrackedLink(location.origin, page, tag);
+      trackedLink.textContent = builtLink;
+      copyTrackedLink.disabled = false;
+    };
+
+    builderForm.addEventListener('input', updateTrackedLink);
+    builderForm.addEventListener('submit', (event) => event.preventDefault());
+    copyTrackedLink.addEventListener('click', async () => {
+      if (!builtLink) return;
       try {
-        await logout();
-      } finally {
-        location.replace(LOGIN_URL);
+        await navigator.clipboard.writeText(builtLink);
+        builderStatus.textContent = 'Link copied.';
+      } catch {
+        builderStatus.textContent = 'Copy failed. Select the link above and copy it manually.';
       }
     });
 

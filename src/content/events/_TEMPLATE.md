@@ -23,7 +23,7 @@ start: 2026-01-01T09:00:00+08:00   # date + start time (WA is +08:00)
 end: 2026-01-01T11:00:00+08:00     # optional end time — delete this line if not needed
 location: Where to meet
 summary: One or two sentences describing the event and what to bring.
-registerUrl: https://forms.gle/YOUR_EVENT_FORM  # optional — delete if no form
+registerUrl: https://forms.gle/YOUR_EVENT_FORM  # optional — delete if no form. Clicks show in site metrics as event-register:<this file name>
 # ── AFTER THE EVENT: EXTEND WITH IMPACT (all optional — delete if not needed) ──
 # project: less-mess   # parent project filename (no .md) — ONLY if it belongs to one
 # image: /images/projects/events/your_event_folder/your-photo.jpg   # hero photo (also the Past events tile photo)

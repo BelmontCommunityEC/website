@@ -257,3 +257,34 @@ export function pagesCsv(report: MetricsReport) {
     report.pages.map((page) => [page.path, page.views, page.uniqueVisitorDays]),
   );
 }
+
+export function sourcesCsv(report: MetricsReport) {
+  return toCsv(['Source', 'Visits'], report.referrers.map((row) => [sourceLabel(row.source), row.count]));
+}
+
+export function linksCsv(report: MetricsReport) {
+  return toCsv(['Link', 'Clicks'], report.links.map((row) => [row.link, row.count]));
+}
+
+export function campaignsCsv(report: MetricsReport) {
+  return toCsv(['utm_source tag', 'Visits'], report.campaigns.map((row) => [row.campaign, row.count]));
+}
+
+/** Matches the server's accepted tag format: lowercase letters, numbers, dots, underscores and hyphens. */
+export function normalizeTag(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[\s/]+/g, '-')
+    .replace(/[^a-z0-9._-]/g, '')
+    .replace(/-{2,}/g, '-')
+    .replace(/^[-.]+|[-.]+$/g, '')
+    .slice(0, 40)
+    .replace(/[-.]+$/, '');
+}
+
+export function buildTrackedLink(origin: string, path: string, tag: string) {
+  const url = new URL(path, origin);
+  url.searchParams.set('utm_source', tag);
+  return url.toString();
+}

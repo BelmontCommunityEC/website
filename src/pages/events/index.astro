@@ -65,6 +65,7 @@ function impactLine(data: (typeof past)[number]['data']): string | null {
               summary={event.data.summary}
               registerUrl={event.data.registerUrl}
               href={`/events/${event.id}`}
+              slug={event.id}
             />
           ))}
         </div>

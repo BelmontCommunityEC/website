@@ -170,8 +170,8 @@ What is recorded (daily totals, Perth time, kept ~13 months):
 How it works:
 
 - `src/scripts/site-metrics.ts` (loaded by `BaseLayout.astro`) sends small
-  beacons to `/api/site-metrics`. It skips `/admin`, localhost, and browsers
-  sending Global Privacy Control or Do Not Track.
+  beacons to `/api/site-metrics`. It skips `/admin`, localhost, Netlify deploy
+  previews, and browsers sending Global Privacy Control or Do Not Track.
 - `netlify/functions/site-metrics.mjs` validates the beacon and updates
   `daily/YYYY-MM-DD` in the `site-metrics` Netlify Blobs store. Daily uniques
   use an HMAC of IP + user agent with a random salt that exists only for that
@@ -184,7 +184,12 @@ How it works:
 - Shared logic and tests: `netlify/lib/site-metrics.mjs`, run `npm test`.
 
 To label a specific link in the dashboard, add `data-track-link="your-label"`.
-To exclude a link, add `data-no-track`.
+To exclude a link, add `data-no-track`. Forms in `src/config.ts` are named
+`<key>-form` automatically, and event Register buttons are named
+`event-register:<event-slug>`.
+
+Committee-facing explanations of every metric, campaign tags and the link
+builder are in [METRICS-GUIDE.md](./METRICS-GUIDE.md) (and on the dashboard).
 
 ### Dashboard access setup (one-off, in the Netlify UI)
 
@@ -200,3 +205,64 @@ To remove access, delete the user or remove the `admin` role in the Identity tab
 
 To preview the dashboard layout locally with sample data, run `npm run dev` and
 open `/admin/metrics/?demo`. Demo mode is removed from production builds.
+
+All `/admin/*` pages except `/admin/login/` are restricted to the `admin` role by
+the redirect rules in `netlify.toml`; each admin function also checks the role.
+
+## Content drafting (admin)
+
+Committee admins can draft new events at `/admin/drafts/event/` without editing
+files. Submitting creates a pull request; Netlify builds a free Deploy Preview;
+a reviewer merges to publish. Committee instructions:
+[DRAFTING-GUIDE.md](./DRAFTING-GUIDE.md).
+
+How it works:
+
+- `src/lib/event-draft.ts`: shared validation and markdown output (uses the
+  category, metric and organisation registries). Used by the page and the function.
+- `src/scripts/photo-prep.ts`: resizes photos in the browser to 2560px on the long
+  edge, high-quality JPEG (q0.9, lowered only to stay under the 4 MB upload
+  limit), correct orientation, no GPS metadata. Rejects photos under 800px.
+- `netlify/functions/content-drafts.mjs`: `start` (creates a `drafts/event-*`
+  branch), `photo` (one JPEG per request) and `finish` (commits the event file and
+  opens a pull request). Requires the `admin` role, same-origin requests and an
+  `X-BCEC-Admin` header.
+- `netlify/lib/github-drafts.mjs`: GitHub API client that only writes to
+  `drafts/event-*` branches, and only to `src/content/events/<slug>.md` or
+  `public/images/projects/events/<slug>/*.jpg`.
+- Tests: `npm test` (needs Node 22.6+ for TypeScript type stripping).
+
+To preview the form locally, run `npm run dev` and open `/admin/drafts/event/?demo`
+(nothing is sent in demo mode).
+
+### Drafting setup (one-off)
+
+1. **GitHub account for the token (recommended):** create a separate GitHub
+   account (e.g. `bcec-website-drafts`) and give it **Write** access to this
+   repository only. A token from this account can't bypass the branch rule in
+   step 3. Using an admin's own account also works, but then the code's
+   draft-branch guard is the only protection if the token leaks.
+2. **Fine-grained token:** signed in as that account, go to GitHub **Settings →
+   Developer settings → Personal access tokens → Fine-grained tokens → Generate
+   new token**:
+   - Resource owner: `BelmontCommunityEC`; repository access: only `website`.
+   - Permissions: **Contents: Read and write**, **Pull requests: Read and write**.
+   - Set an expiry (up to a year) and diary a reminder to renew it.
+   - If the organisation requires approval for fine-grained tokens, an owner
+     approves it under the organisation's **Settings → Personal access tokens**.
+3. **Protect `main`:** repository **Settings → Rules → Rulesets → New branch
+   ruleset**: target the default branch, enable **Require a pull request before
+   merging** and **Block force pushes**, and add repository admins to the bypass
+   list if they still push directly.
+4. **Netlify environment variable:** **Project configuration → Environment
+   variables → Add a variable**: key `GITHUB_DRAFTS_TOKEN`, value = the token,
+   scope **Functions**. Optional overrides: `GITHUB_DRAFTS_REPO` (default
+   `BelmontCommunityEC/website`) and `GITHUB_DRAFTS_BASE` (default `main`).
+   Redeploy afterwards so the functions pick it up.
+5. **Deploy Previews:** confirm **Project configuration → Build & deploy →
+   Branches and deploy contexts → Deploy Previews** is set to build pull
+   requests (the default). Previews use 0 credits; merging is a normal 15-credit
+   production deploy.
+
+Until the token is set, the form works but sending shows "Drafting isn't set up
+yet".
