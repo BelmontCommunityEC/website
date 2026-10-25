@@ -8,9 +8,11 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  /** Hide the page from search engines (used for private admin pages). */
+  noindex?: boolean;
 }
 
-const { title, description, image } = Astro.props;
+const { title, description, image, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -18,6 +20,15 @@ const { title, description, image } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      // Netlify Identity invite and password-recovery emails link to the site root.
+      if (
+        /^#(invite_token|recovery_token|confirmation_token|email_change_token|access_token)=/.test(location.hash) &&
+        location.pathname.replace(/\/$/, '') !== '/admin/login'
+      ) {
+        location.replace('/admin/login/' + location.hash);
+      }
+    </script>
     <link
       rel="icon"
       type="image/svg+xml"
@@ -31,7 +42,7 @@ const { title, description, image } = Astro.props;
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
     />
-    <SEO title={title} description={description} image={image} />
+    <SEO title={title} description={description} image={image} noindex={noindex} />
   </head>
   <body class="flex min-h-screen flex-col">
     <a
@@ -45,5 +56,9 @@ const { title, description, image } = Astro.props;
       <slot />
     </main>
     <Footer />
+    <script>
+      import { initSiteMetrics } from '../scripts/site-metrics';
+      initSiteMetrics();
+    </script>
   </body>
 </html>

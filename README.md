@@ -162,3 +162,52 @@ Configuration for the sync script and workflow:
 The pages show live totals via a progressive-enhancement fetch to
 `/api/advocacy-assist`, falling back to the committed snapshot when the endpoint
 is unavailable (e.g. local `astro dev` without functions).
+
+If Netlify deploys automatically from this repository, each changed snapshot
+commit also triggers a production deploy (15 Netlify credits on credit-based plans).
+
+## Private site metrics
+
+The site records aggregate usage for a committee-only dashboard at
+`/admin/metrics/`. There are no cookies or third-party analytics scripts.
+
+What is recorded (daily totals, Perth time, kept ~13 months):
+
+- Page views and daily unique visitors, overall and per page
+- Traffic sources (referring hostname only, e.g. `facebook.com`) and `utm_source` tags
+- Key link clicks (membership form, socials, PDFs, external links)
+- Protect a tree builder starts, email-app opens and full-email copies
+
+How it works:
+
+- `src/scripts/site-metrics.ts` (loaded by `BaseLayout.astro`) sends small
+  beacons to `/api/site-metrics`. It skips `/admin`, localhost, and browsers
+  sending Global Privacy Control or Do Not Track.
+- `netlify/functions/site-metrics.mjs` validates the beacon and updates
+  `daily/YYYY-MM-DD` in the `site-metrics` Netlify Blobs store. Daily uniques
+  use an HMAC of IP + user agent with a random salt that exists only for that
+  day; raw IP addresses are never stored.
+- `netlify/functions/site-metrics-cleanup.mjs` runs hourly and deletes previous
+  days' salts and visitor markers, assist rate-limit keys, and totals older than
+  ~13 months.
+- `netlify/functions/site-metrics-admin.mjs` serves reports only to Netlify
+  Identity users with the `admin` role.
+- Shared logic and tests: `netlify/lib/site-metrics.mjs`, run `npm test`.
+
+To label a specific link in the dashboard, add `data-track-link="your-label"`.
+To exclude a link, add `data-no-track`.
+
+### Dashboard access setup (one-off, in the Netlify UI)
+
+1. **Project configuration → Identity**: enable Identity.
+2. Set **Registration preferences** to **Invite only** before inviting anyone.
+3. Optional: enable **Google** under External providers.
+4. **Identity** tab → **Invite users**: invite each committee member by email.
+   Invitation links open `/admin/login/`, where they set a password.
+5. After they accept, open each user, add the role `admin`, and save.
+6. Committee members sign in at `/admin/login/`.
+
+To remove access, delete the user or remove the `admin` role in the Identity tab.
+
+To preview the dashboard layout locally with sample data, run `npm run dev` and
+open `/admin/metrics/?demo`. Demo mode is removed from production builds.

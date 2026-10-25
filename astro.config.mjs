@@ -8,7 +8,7 @@ export default defineConfig({
   // Update this when the final custom domain is connected.
   // Used for SEO canonical URLs, sitemap.xml and social share tags.
   site: 'https://belmontcommunityec.org.au',
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (page) => !new URL(page).pathname.startsWith('/admin/') })],
   vite: {
     plugins: [tailwindcss()],
   },

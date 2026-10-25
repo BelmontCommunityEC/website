@@ -343,6 +343,7 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
       </div>
       <a
         id="open-email"
+        data-no-track
         href="mailto:belmont@belmont.wa.gov.au"
         class="mt-5 inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:w-auto"
       >
@@ -462,6 +463,8 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
   </style>
 
   <script>
+    import { trackEvent } from '../../scripts/site-metrics';
+
     const form = document.querySelector<HTMLFormElement>('#tree-concern-form');
     const exemptTreeType = document.querySelector<HTMLInputElement>('#exempt-tree-type');
     const exemptionGuidance = document.querySelector<HTMLElement>('#exempt-tree-guidance');
@@ -529,7 +532,7 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
       }
     };
 
-    const trackAssist = (buttonKey: string, event: string) => {
+    const trackAssist = (buttonKey: string, event: string, metric: string) => {
       const now = Date.now();
       const last = lastTrackedAt.get(buttonKey) ?? 0;
       if (trackedAssistButtons.has(buttonKey) || now - last < trackThrottleMs) return;
@@ -539,6 +542,7 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
 
       // Record to the server-verified counter (Netlify Function + Blobs).
       recordServerAssist(event);
+      trackEvent(metric);
     };
 
     const fieldValue = (name: string) => {
@@ -669,12 +673,14 @@ ${contactLines}`.replace(/\n{3,}/g, '\n\n');
       buildEmail();
     });
     form?.addEventListener('input', buildEmail);
+    // Counted once per page load; only the event name is sent, never the answers.
+    form?.addEventListener('input', () => trackEvent('protect-a-tree:builder-start'), { once: true });
     openEmail?.addEventListener('click', (event) => {
       if (!buildEmail()) {
         event.preventDefault();
         return;
       }
-      trackAssist('open-email', 'advocacy-protect-tree-open-email');
+      trackAssist('open-email', 'advocacy-protect-tree-open-email', 'protect-a-tree:email-open');
     });
     copyToButton?.addEventListener('click', async () => {
       const draft = buildEmail();
@@ -705,7 +711,7 @@ ${contactLines}`.replace(/\n{3,}/g, '\n\n');
       const headers = `To: belmont@belmont.wa.gov.au\n${cc ? `CC: ${cc}\n` : ''}Subject: ${subject}`;
       try {
         await navigator.clipboard.writeText(`${headers}\n\n${body}`);
-        trackAssist('copy-email', 'advocacy-protect-tree-copy-full-email');
+        trackAssist('copy-email', 'advocacy-protect-tree-copy-full-email', 'protect-a-tree:email-copy');
         if (copyStatus) copyStatus.textContent = 'Email copied to clipboard.';
       } catch {
         if (copyStatus) copyStatus.textContent = 'Copy failed. Select and copy the email text above.';

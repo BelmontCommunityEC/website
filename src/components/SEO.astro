@@ -10,12 +10,15 @@ interface Props {
   description?: string;
   /** Absolute or site-relative image for social sharing. */
   image?: string;
+  /** Ask search engines not to index this page. */
+  noindex?: boolean;
 }
 
 const {
   title,
   description = site.description,
   image = '/site_assets/BCEC Logo (1200 x 630 px).png',
+  noindex = false,
 } = Astro.props;
 
 const pageTitle = title ? `${title} · ${site.name}` : `${site.shortName} | ${site.name}`;
@@ -25,6 +28,7 @@ const socialImage = new URL(image, Astro.site ?? site.url).href;
 
 <title>{pageTitle}</title>
 <meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
 <link rel="canonical" href={canonical} />
 
 <!-- Open Graph -->

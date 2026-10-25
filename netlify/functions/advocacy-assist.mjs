@@ -1,4 +1,5 @@
 import { getStore } from '@netlify/blobs';
+import { METRICS_STORE, assistRateLimitKey } from '../lib/site-metrics.mjs';
 
 /**
  * Server-verified advocacy assist counter (Option B).
@@ -7,8 +8,10 @@ import { getStore } from '@netlify/blobs';
  * GET  /api/advocacy-assist                       -> returns current totals
  *
  * Counts are stored in Netlify Blobs. Increments are best-effort (not atomic),
- * which is acceptable at community-scale volume. A per-IP, per-event rate limit
- * reduces accidental double-counting and basic abuse.
+ * which is acceptable at community-scale volume. A per-visitor, per-event rate
+ * limit reduces accidental double-counting and basic abuse. Rate-limit keys use
+ * a daily pseudonymous ID rather than the raw IP and are removed by the hourly
+ * site-metrics-cleanup function.
  */
 
 export const config = {
@@ -30,7 +33,6 @@ const RATE_LIMIT_MS = 60_000;
 const STORE_NAME = 'advocacy-metrics';
 const TOTAL_KEY = 'total';
 const campaignKey = (campaign) => `campaign/${campaign}`;
-const rateKey = (campaign, event, ip) => `ratelimit/${campaign}/${event}/${ip}`;
 
 function json(body, statusCode = 200) {
   return new Response(JSON.stringify(body), {
@@ -83,15 +85,20 @@ export default async (req, context) => {
     return json({ error: 'Unknown campaign or event' }, 400);
   }
 
-  const ip = context.ip ?? 'unknown';
   const now = Date.now();
+  const rateKey = await assistRateLimitKey(getStore({ name: METRICS_STORE, consistency: 'strong' }), {
+    campaign,
+    event,
+    ip: context.ip ?? 'unknown',
+    now: new Date(now),
+  });
 
   // Best-effort rate limit.
-  const lastSeen = await readNumber(store, rateKey(campaign, event, ip));
+  const lastSeen = await readNumber(store, rateKey);
   if (now - lastSeen < RATE_LIMIT_MS) {
     return json({ throttled: true, ...(await readTotals(store)) });
   }
-  await store.set(rateKey(campaign, event, ip), String(now));
+  await store.set(rateKey, String(now));
 
   // Increment counters (non-atomic; acceptable at this scale).
   const total = (await readNumber(store, TOTAL_KEY)) + 1;
