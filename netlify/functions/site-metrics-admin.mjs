@@ -1,6 +1,6 @@
 import { getStore } from '@netlify/blobs';
 import { getUser } from '@netlify/identity';
-import { ADMIN_ROLE, METRICS_STORE, REPORT_RANGES, buildReport } from '../lib/site-metrics.mjs';
+import { ADMIN_ROLE, ASSIST_STORE, METRICS_STORE, REPORT_RANGES, buildReport, readAssistTotals } from '../lib/site-metrics.mjs';
 
 /**
  * Admin-only site metrics report.
@@ -40,8 +40,11 @@ export default async (req) => {
   if (!REPORT_RANGES.includes(days)) return json({ error: 'Unsupported date range.' }, 400);
 
   try {
-    const report = await buildReport(getStore({ name: METRICS_STORE, consistency: 'strong' }), { days });
-    return json(report);
+    const [report, assists] = await Promise.all([
+      buildReport(getStore({ name: METRICS_STORE, consistency: 'strong' }), { days }),
+      readAssistTotals(getStore({ name: ASSIST_STORE, consistency: 'strong' })),
+    ]);
+    return json({ ...report, assists });
   } catch (error) {
     console.error('site-metrics-admin: unable to build report', error instanceof Error ? error.message : error);
     return json({ error: 'Unable to load metrics right now.' }, 500);

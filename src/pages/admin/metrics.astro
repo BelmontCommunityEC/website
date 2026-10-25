@@ -52,7 +52,12 @@ const ranges = [
 
       <section class="metrics-card" aria-labelledby="funnel-heading">
         <h2 id="funnel-heading" class="metrics-heading">Protect a tree email builder</h2>
-        <p class="mt-1 text-sm text-muted">Each step is counted once per page visit. Opening a draft doesn’t confirm it was sent.</p>
+        <dl id="metrics-assists" class="mt-3 grid gap-3 sm:grid-cols-2"></dl>
+        <p class="mt-2 text-xs leading-relaxed text-muted">
+          All-time assists are the public tally shown on the website, across every date range. The steps below
+          only cover the selected period.
+        </p>
+        <p class="mt-4 text-sm text-muted">Each step is counted once per page visit. Opening a draft doesn’t confirm it was sent.</p>
         <ol id="metrics-funnel" class="mt-3"></ol>
       </section>
 
@@ -137,6 +142,7 @@ const ranges = [
       downloadCsv,
       formatDate,
       pagesCsv,
+      renderAssists,
       renderChart,
       renderDailyTable,
       renderFunnel,
@@ -192,6 +198,7 @@ const ranges = [
       renderChart(byId('metrics-chart'), report.daily);
       renderDailyTable(byId('metrics-daily'), report.daily);
       renderFunnel(byId('metrics-funnel'), report);
+      renderAssists(byId('metrics-assists'), report);
       renderRankings(report, {
         pages: byId('metrics-pages'),
         referrers: byId('metrics-referrers'),

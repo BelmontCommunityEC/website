@@ -9,8 +9,6 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "sync:advocacy-metrics": "node scripts/sync-advocacy-assists.mjs",
-    "check:advocacy-metrics": "node scripts/sync-advocacy-assists.mjs --check",
     "test": "node --test netlify/lib/site-metrics.test.mjs"
   },
   "dependencies": {

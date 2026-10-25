@@ -1,9 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { forms, socials } from '../../config';
-import { advocacyMetrics } from '../../data/advocacy-metrics';
 
-const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ?? 0;
 const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-no-21-tree-development-exemption-and-assessment-policy.pdf';
 ---
 
@@ -399,10 +397,8 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
           </dt>
           <dd
             data-assist-count="protect-a-tree"
-            class="order-1 shrink-0 font-heading text-3xl font-bold tabular-nums text-brand-dark"
-          >
-            {protectATreeAssists.toLocaleString('en-AU')}
-          </dd>
+            class="order-1 min-h-9 min-w-[1ch] shrink-0 font-heading text-3xl font-bold tabular-nums text-brand-dark"
+          ></dd>
         </div>
       </dl>
       <p class="text-sm leading-relaxed text-muted sm:border-l sm:border-brand-light sm:pl-6">
@@ -499,8 +495,8 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
         });
     };
 
-    // Show the live server-verified count on load (static snapshot is the
-    // fallback if the endpoint is unreachable, e.g. local dev without functions).
+    // Show the live server-verified count on load. It stays blank if the
+    // endpoint is unreachable (e.g. local dev without functions).
     const loadAssistCount = async () => {
       try {
         const response = await fetch('/api/advocacy-assist', {
@@ -510,7 +506,7 @@ const policyUrl = 'https://www.belmont.wa.gov.au/docs/ecm/local-planning-policy-
         const data = await response.json();
         updateAssistCount(data?.campaigns?.['protect-a-tree']);
       } catch {
-        // Keep the static snapshot value on any error.
+        // Leave the count blank on any error.
       }
     };
 

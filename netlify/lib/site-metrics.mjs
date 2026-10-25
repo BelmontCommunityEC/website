@@ -387,6 +387,18 @@ export async function buildReport(store, { days, now = new Date() }) {
   };
 }
 
+/** All-time public assist totals from the advocacy-assist counter store. */
+export async function readAssistTotals(assistStore) {
+  const campaigns = {};
+  for await (const page of assistStore.list({ prefix: 'campaign/', paginate: true })) {
+    for (const blob of page.blobs) {
+      const slug = blob.key.slice('campaign/'.length);
+      if (slug) campaigns[slug] = Number(await assistStore.get(blob.key)) || 0;
+    }
+  }
+  return { total: Number(await assistStore.get('total')) || 0, campaigns };
+}
+
 async function deleteMatching(store, prefix, shouldDelete, { deadline, concurrency }) {
   const keys = [];
   let listed = true;

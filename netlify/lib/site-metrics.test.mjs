@@ -12,6 +12,7 @@ import {
   normalizePath,
   normalizeReferrer,
   parseMetric,
+  readAssistTotals,
   readLimitedBody,
   recordMetric,
   resetSaltCache,
@@ -263,6 +264,15 @@ describe('reporting and cleanup', () => {
   beforeEach(() => {
     store = new MemoryStore();
     resetSaltCache();
+  });
+
+  it('reads all-time assist totals for the dashboard', async () => {
+    const assistStore = new MemoryStore();
+    await assistStore.set('total', '7');
+    await assistStore.set('campaign/protect-a-tree', '7');
+    await assistStore.set('ratelimit/2026-10-22/protect-a-tree/x/abc', '1');
+    assert.deepEqual(await readAssistTotals(assistStore), { total: 7, campaigns: { 'protect-a-tree': 7 } });
+    assert.deepEqual(await readAssistTotals(new MemoryStore()), { total: 0, campaigns: {} });
   });
 
   it('keeps report totals numeric even if stored data contains built-in object names', async () => {

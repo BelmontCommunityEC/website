@@ -285,18 +285,11 @@ Notes:
 
 ## Advocacy metrics (ADVOCACY ASSISTS)
 
-The **ADVOCACY ASSISTS** and campaign assist totals are stored in:
-
-- `src/data/advocacy-metrics.ts`
-
-This file is refreshed by automation from the advocacy assist counter endpoint
-(`/api/advocacy-assist`). Do not
-hand-edit these numbers unless troubleshooting.
-
-Operational commands:
-
-- `npm run sync:advocacy-metrics` (refresh snapshot)
-- `npm run check:advocacy-metrics` (verify snapshot is current)
+The **ADVOCACY ASSISTS** and campaign assist totals are counted live by the
+website's advocacy assist counter (`/api/advocacy-assist`) and stored in Netlify.
+There's no file to edit: the numbers update automatically on the website.
+Committee members can also see the all-time totals on the private metrics
+dashboard at `/admin/metrics/`.
 
 ### Step — Create the grant file
 

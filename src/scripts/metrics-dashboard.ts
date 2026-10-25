@@ -30,6 +30,8 @@ export interface MetricsReport {
   referrers: { source: string; count: number }[];
   campaigns: { campaign: string; count: number }[];
   links: { link: string; count: number }[];
+  /** All-time public assist totals (not limited to the selected date range). */
+  assists?: { total: number; campaigns: Record<string, number> };
 }
 
 const numberFormat = new Intl.NumberFormat('en-AU', { maximumFractionDigits: 1 });
@@ -106,6 +108,28 @@ export function renderDailyTable(container: HTMLElement, rows: DailyRow[]) {
       row.emailCopies,
       row.linkClicks,
     ]),
+  );
+}
+
+export function renderAssists(container: HTMLElement, report: MetricsReport) {
+  const assists = report.assists;
+  if (!assists) {
+    container.replaceChildren();
+    return;
+  }
+  const items: [string, number][] = [
+    ['All-time Protect a tree assists', assists.campaigns['protect-a-tree'] ?? 0],
+    ['All-time advocacy assists', assists.total],
+  ];
+  container.replaceChildren(
+    ...items.map(([label, value]) => {
+      const card = el('div', 'rounded-lg border border-brand-light bg-white p-3');
+      card.append(
+        el('dt', 'text-xs font-semibold uppercase tracking-wide text-muted', label),
+        el('dd', 'mt-1 font-heading text-2xl font-bold tabular-nums text-brand-dark', formatNumber(value)),
+      );
+      return card;
+    }),
   );
 }
 

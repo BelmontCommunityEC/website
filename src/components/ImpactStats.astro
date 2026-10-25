@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import { resolvePartners } from '../content/organisations';
-import { advocacyMetrics } from '../data/advocacy-metrics';
 
 // Rolls the `stats` from every published project up into a small impact strip.
 // Only stats that carry a `metric` key are summed here, so placeholder or
@@ -115,7 +114,8 @@ const publishedAdvocacySubmissions = advocacySubmissions.filter(
 const advocacyItems = [
   {
     label: 'Advocacy assists',
-    display: advocacyMetrics.advocacyAssistsTotal.toLocaleString('en-AU'),
+    // Filled in by the live count below; blank until it loads.
+    display: '',
     assistCount: 'total',
   },
   {
@@ -173,7 +173,7 @@ const raisedDisplay =
               <dt class="order-2 whitespace-nowrap text-xs uppercase tracking-wide text-muted">{item.label}</dt>
               <dd
                 data-impact-assist-count={'assistCount' in item ? item.assistCount : undefined}
-                class="order-1 font-heading text-3xl font-bold text-brand"
+                class="order-1 min-h-9 font-heading text-3xl font-bold text-brand"
               >{item.display}</dd>
             </div>
           ))}

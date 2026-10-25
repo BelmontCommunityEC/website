@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { advocacyMetrics } from '../../data/advocacy-metrics';
 
 const dateFmt = new Intl.DateTimeFormat('en-AU', {
   day: 'numeric',
@@ -14,8 +13,6 @@ const submissions = (await getCollection('advocacySubmissions'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const submissionsLodged = submissions.length;
-const advocacyAssists = advocacyMetrics.advocacyAssistsTotal;
-const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ?? 0;
 ---
 
 <BaseLayout
@@ -70,20 +67,16 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
           <dd
             id="advocacy-assists-count"
             data-assist-count="total"
-            class="order-1 font-heading text-3xl font-bold tabular-nums text-brand"
-          >
-            {advocacyAssists.toLocaleString('en-AU')}
-          </dd>
+            class="order-1 min-h-9 font-heading text-3xl font-bold tabular-nums text-brand"
+          ></dd>
         </div>
         <div class="flex flex-col">
           <dt class="order-2 text-xs uppercase tracking-wide text-muted">Protect a tree</dt>
           <dd
             id="protect-a-tree-count"
             data-assist-count="protect-a-tree"
-            class="order-1 font-heading text-3xl font-bold tabular-nums text-brand"
-          >
-            {protectATreeAssists.toLocaleString('en-AU')}
-          </dd>
+            class="order-1 min-h-9 font-heading text-3xl font-bold tabular-nums text-brand"
+          ></dd>
         </div>
       </dl>
       <p class="mt-5 border-t border-brand-light pt-4 text-base leading-relaxed text-ink">
@@ -153,9 +146,8 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
   </section>
 
   <script>
-    // Progressive enhancement: replace the build-time snapshot numbers with the
-    // live server-verified totals when the endpoint is reachable. If the fetch
-    // fails (e.g. local dev without functions), the static numbers remain.
+    // Fill in the live server-verified totals. If the fetch fails (e.g. local
+    // dev without functions), the counts stay blank.
     const numberFormat = new Intl.NumberFormat('en-AU');
 
     const applyLiveCounts = async () => {
@@ -179,7 +171,7 @@ const protectATreeAssists = advocacyMetrics.campaignAssists['protect-a-tree'] ??
           }
         });
       } catch {
-        // Keep the static snapshot values on any error.
+        // Leave the counts blank on any error.
       }
     };
 

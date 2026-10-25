@@ -52,6 +52,7 @@ export function demoReport(days: number): MetricsReport {
       { source: 'instagram.com', count: Math.round(uniqueVisitorDays * 0.05) },
     ],
     campaigns: [{ campaign: 'newsletter', count: 18 }],
+    assists: { total: 42, campaigns: { 'protect-a-tree': 42 } },
     links: [
       { link: 'membership-form', count: 12 },
       { link: 'facebook', count: 9 },

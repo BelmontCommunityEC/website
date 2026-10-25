@@ -143,28 +143,17 @@ option that connect straight to Git repo and support custom domains:
 
 For traditional/cPanel hosting: run `npm run build` and upload the contents of `dist/`.
 
-## Advocacy analytics sync
+## Advocacy assists
 
 Advocacy assist counts are recorded server-side by a Netlify Function backed by
 Netlify Blobs (`netlify/functions/advocacy-assist.mjs`, served at
-`/api/advocacy-assist`). The committed snapshot in `src/data/advocacy-metrics.ts`
-is refreshed from that endpoint by automation (not edited by hand).
+`/api/advocacy-assist`). Netlify Blobs is the only source of truth; there is no
+committed snapshot.
 
-- Local/manual sync: `npm run sync:advocacy-metrics`
-- Snapshot check mode: `npm run check:advocacy-metrics`
-- GitHub workflow: `.github/workflows/advocacy-metrics-sync.yml` (daily + manual dispatch)
-
-Configuration for the sync script and workflow:
-
-- `SITE_URL` (deployed site origin, e.g. `https://your-site.netlify.app`)
-- Optional: `ADVOCACY_ASSIST_ENDPOINT` (full endpoint URL override)
-
-The pages show live totals via a progressive-enhancement fetch to
-`/api/advocacy-assist`, falling back to the committed snapshot when the endpoint
-is unavailable (e.g. local `astro dev` without functions).
-
-If Netlify deploys automatically from this repository, each changed snapshot
-commit also triggers a production deploy (15 Netlify credits on credit-based plans).
+The Advocacy page, Protect a tree page and home page impact strip fetch the live
+totals on load. The numbers stay blank until they load, or if the endpoint is
+unavailable (e.g. local `astro dev` without functions). Committee members can
+also see the all-time totals on the private metrics dashboard.
 
 ## Private site metrics
 
